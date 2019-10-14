@@ -37,3 +37,35 @@ npm run test:unit
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+## Create virtual env 
+### create a directory to your project
+mkdir django-vue
+
+### Move the cursor to it
+cd django-vue
+
+### Initialize a virtual env on it
+python3 -m venv ./
+
+### Activate venv
+source ./bin/activate
+
+### Install django
+pip install django
+
+### Create django project
+django-admin startproject djangovue .
+
+### Migrate db and start server 
+python manage.py migrate
+python manage.py runserver
+
+## Install dependencies
+pip install -r requirements.txt
+
+## Update dependencies
+pip freeze > requirements.txt
+
+
