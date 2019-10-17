@@ -10,6 +10,7 @@ class UserSerializer(serializers.Serializer):
     nr_cc = serializers.CharField(required=True)
     username = serializers.CharField(required=True)
     email = serializers.CharField(required=True)
+    distrito =  serializers.CharField(required=True)
 
     def update(self, instance, validated_data):
         """

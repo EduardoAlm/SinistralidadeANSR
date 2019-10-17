@@ -25,7 +25,7 @@ SECRET_KEY = '23*ci!%w6^mgidn*%-2ludfn3$xppq)3g9t51%idkpfos-g9=y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['188.251.5.91', '127.0.0.1:8000', '127.0.0.1']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'sinistralidade',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +77,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'sinistros',
+        'USER': 'postgres',
+        'PASSWORD': '180796',
+        'HOST': '188.251.5.91',
+        'PORT': '5432',
     }
 }
 
