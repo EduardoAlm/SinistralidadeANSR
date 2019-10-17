@@ -53,7 +53,7 @@ cd django-vue
 
 ### Initialize a virtual env on it
 ```
-python3 -m venv ./
+virtualenv venv
 ```
 
 ### Activate venv
