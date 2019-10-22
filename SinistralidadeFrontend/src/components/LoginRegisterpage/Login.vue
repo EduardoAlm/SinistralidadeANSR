@@ -14,23 +14,34 @@
           </div>
         </div>
       </div>
+      <div>
+        <ul>
+          <Log v-for="log in login" v-bind:log="log" v-bind:key="log.id" />
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import VueInputUi from "../../utils/indexAuth.vue";
-
+import Log from "../../utils/Log.vue";
 export default {
   name: "Login",
+  data() {
+    return {};
+  },
   components: {
-    VueInputUi
+    VueInputUi,
+    Log
   },
   props: {
     msg: String
   },
-  data: function() {
-    return {};
+  computed: {
+    login() {
+      return this.$store.state.login;
+    }
   }
 };
 </script>

@@ -52,8 +52,7 @@
         :style="[colorStyle]"
         class="field-label"
         @click="focusInput"
-        >{{ hintValue || labelValue }}</label
-      >
+      >{{ hintValue || labelValue }}</label>
       <div v-if="loader" class="loader" :class="{ textarea }" />
     </div>
     <p></p>
@@ -94,18 +93,10 @@
         :style="[colorStyle]"
         class="field-label"
         @click="focusInput"
-        >{{ hintValue || labelValue2 }}</label
-      >
+      >{{ hintValue || labelValue2 }}</label>
       <div v-if="loader" class="loader" :class="{ textarea }" />
     </div>
-    <button
-      v-bind="$attrs"
-      class="btn"
-      style="margin-top: 20px;"
-      @click="isConnected"
-    >
-      Login
-    </button>
+    <button v-bind="$attrs" class="btn" style="margin-top: 20px;" @click="isConnected">Login</button>
   </div>
 </template>
 
@@ -135,7 +126,8 @@ export default {
     return {
       isFocus: false,
       address: "",
-      password: ""
+      password: "",
+      isConn: false
     };
   },
   computed: {
@@ -189,7 +181,19 @@ export default {
       this.$emit("blur");
       this.isFocus = false;
     },
-    isConnected: function() {}
+    isConnected: function() {
+      console.log(this.address);
+      console.log(this.password);
+      const username = "asd";
+      const password = "asd";
+      //getUserdata
+      if (password == this.password && username == this.address) {
+        this.isConn = true;
+        this.$store.dispatch("addLogin", { text: this.address });
+
+        console.log("is Connected!!");
+      } else console.log("login failed!!");
+    }
   }
 };
 </script>
