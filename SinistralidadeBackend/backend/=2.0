@@ -1,0 +1,2 @@
+Requirement already satisfied: Django in /home/carolina/Desktop/UBI/Mestrado/BD/SinistralidadeANSR/SinistralidadeBackend/venv/lib/python2.7/site-packages (1.11.25)
+Requirement already satisfied: pytz in /home/carolina/Desktop/UBI/Mestrado/BD/SinistralidadeANSR/SinistralidadeBackend/venv/lib/python2.7/site-packages (from Django) (2019.3)
