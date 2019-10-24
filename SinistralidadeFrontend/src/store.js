@@ -39,8 +39,8 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    get_user(store, cc) {
-      return api
+    async get_user(store, cc) {
+      return await api
         .get(apiRoot + "/user/" + parseInt(cc["text"]) + "/")
         .then(response => store.commit("GET_USER", response))
         .catch(error => store.commit("API_FAIL", error));

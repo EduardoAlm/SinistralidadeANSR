@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="w3-container w3-display-middle" style="width: 500px">
-      <h1>Login Page</h1>
+      <h1>Iniciar Sessão</h1>
       <p>&nbsp;</p>
       <div id="VueInputUi" class="vue-input-ui">
         <div class="container">

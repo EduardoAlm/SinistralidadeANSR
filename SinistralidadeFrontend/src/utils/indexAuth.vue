@@ -96,11 +96,25 @@
       >{{ hintValue || labelValue2 }}</label>
       <div v-if="loader" class="loader" :class="{ textarea }" />
     </div>
-    <button v-bind="$attrs" class="btn" style="margin-top: 20px;" @click="isConnected">Login</button>
+    <router-link class="w3-btn w3-wide" v-bind:key="link.id" :to="`${link.page}`">
+      <button v-bind="$attrs" class="btn" style="margin-top: 20px;" @click="isConnected">Login</button>
+    </router-link>
+    <div v-if="isConn">
+      <div class="alert alert-success" style="margin-top:20px">
+        <strong>Successo!</strong>
+        Inicio de sessão efectuado com sucesso!
+      </div>
+    </div>
+    <div class="alert alert-danger" style="margin-top:20px" v-else-if="isFK==1&&isConn==false">
+      <strong>Insuccesso!</strong>
+      Houve um problema com o seu login por favor tente novamente.
+    </div>
   </div>
 </template>
 
 <script>
+import * as Cookies from "js-cookie";
+
 export default {
   name: "VueInputUi",
   props: {
@@ -127,7 +141,9 @@ export default {
       isFocus: false,
       address: "",
       password: "",
-      isConn: false
+      isConn: false,
+      isFK: 0,
+      link: { id: 0, text: "SinistralidadeANSR", page: "/" }
     };
   },
   computed: {
@@ -184,16 +200,28 @@ export default {
       this.$emit("blur");
       this.isFocus = false;
     },
-    isConnected: function() {
-      console.log(this.address);
-      console.log(this.password);
-      this.$store.dispatch("get_user", { text: this.address });
+    isConnected: async function() {
+      await this.$store.dispatch("get_user", { text: this.address });
       console.log(this.user);
-
-      this.isConn = true;
-
-      console.log("is Connected!!");
-      console.log("login failed!!");
+      if (this.user.length > 0) {
+        if (
+          this.user[0].cc === parseInt(this.address) &&
+          this.password === this.user[0].palavrapasse
+        ) {
+          this.isConn = true;
+          console.log("is Connected!!");
+          this.isFK = 0;
+          Cookies.set("loggedIn", 1);
+          Cookies.set("loggedName", this.user[0].nome);
+          window.location.reload(true);
+        }
+      } else {
+        console.log("login failed!!");
+        this.isFK = 1;
+        this.isConn = false;
+        this.address = "";
+        this.password = "";
+      }
     }
   }
 };

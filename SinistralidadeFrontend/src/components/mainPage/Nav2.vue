@@ -22,14 +22,22 @@
           <img v-if="routes.imageUrl" :src="routes.imageUrl" style="width: 40px; height: 40px;" />
           {{ routes.text }}
         </router-link>
+        <button
+          :id="logout"
+          class="w3-button w3-red w3-hover-opacity w3-margin-left"
+          style="font-family: sans-serif, letter-spacing: 3px"
+          @click="logout"
+        >Terminar Sessão</button>
       </div>
     </nav>
   </div>
 </template>
 
 <script>
+import * as Cookies from "js-cookie";
+
 export default {
-  name: "Nav",
+  name: "Nav2",
   data: function() {
     return {
       links: [
@@ -47,16 +55,18 @@ export default {
       links1: [
         {
           id: 2,
-          text: "Iniciar Sessão",
-          page: "/login"
-        },
-        {
-          id: 3,
-          text: "Registar",
-          page: "/register"
+          text: Cookies.get("loggedName"),
+          page: "/accInfo"
         }
       ]
     };
+  },
+  methods: {
+    logout() {
+      Cookies.set("loggedIn", 0);
+      Cookies.remove("loggedName");
+      window.location.reload(true);
+    }
   }
 };
 </script>

@@ -1,22 +1,34 @@
 <template>
   <div id="app">
-    <div>
+    <div v-if="this.loggedIn == 1">
+      <Nav2></Nav2>
+    </div>
+    <div v-else>
       <Nav></Nav>
     </div>
+
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 import Nav from "./components/mainPage/Nav.vue";
+import Nav2 from "./components/mainPage/Nav2.vue";
+import * as Cookies from "js-cookie";
 
 export default {
   name: "app",
   data() {
-    return {};
+    return {
+      loggedIn: 0
+    };
+  },
+  mounted() {
+    this.loggedIn = Cookies.get("loggedIn");
   },
   components: {
-    Nav
+    Nav: Nav,
+    Nav2: Nav2
   }
 };
 </script>
