@@ -12,13 +12,16 @@ const store = new Vuex.Store({
     registry: []
   },
   mutations: {
-    GET_LOGIN: function(state, response) {
-      state.login = response.body;
-    },
-    ADD_LOGIN: function(state, response) {
+    LOGIN: function(state, response) {
       state.login.push(response.body);
     },
-    CLEAR_LOGIN: function(state) {
+    GET_USER: function(state, response) {
+      state.login.push(response.body);
+    },
+    POST_USER: function(state, response) {
+      state.login.push(response.body);
+    },
+    DEL_USER: function(state) {
       const login = state.login;
       login.splice(0, login.length);
     },
@@ -38,13 +41,19 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    getLogin(store) {
+    login(store) {
       return api
-        .get(apiRoot + "/login/")
-        .then(response => store.commit("GET_LOGIN", response))
+        .get(apiRoot + "/userlogin/")
+        .then(response => store.commit("LOGIN", response))
         .catch(error => store.commit("API_FAIL", error));
     },
-    addLogin(store, log) {
+    get_user(store) {
+      return api
+        .get(apiRoot + "/user/(?P<cc>.*)/")
+        .then(response => store.commit("LOGIN", response))
+        .catch(error => store.commit("API_FAIL", error));
+    },
+    del_user(store, log) {
       return api
         .post(apiRoot + "/login/", log)
         .then(response => store.commit("ADD_LOGIN", response))

@@ -3,14 +3,15 @@ import json
 from django.utils import timezone
 from rest_framework import serializers
 
-from .models import User
+from .models import utilizador
 
 
-class UserSerializer(serializers.Serializer):
-    nr_cc = serializers.CharField(required=True)
-    username = serializers.CharField(required=True)
-    email = serializers.CharField(required=True)
-    distrito =  serializers.CharField(required=True)
+class utilizadorSerializer(serializers.Serializer):
+    cc = serializers.IntegerField(required=True)
+    nome = serializers.CharField(required=True)
+    palavrapasse = serializers.CharField(required=True)
+    ocupacao = serializers.CharField(required=True)
+    n_distrito = serializers.CharField(required=True)
 
     def update(self, instance, validated_data):
         """
@@ -27,14 +28,10 @@ class UserSerializer(serializers.Serializer):
             print(attr)
         return attrs
 
-    
     def create(self, validated_data):
         """
         Create the model object
         """
-        user = User(**validated_data)
+        user = utilizador(**validated_data)
         user.save()
         return user
-
-    
-

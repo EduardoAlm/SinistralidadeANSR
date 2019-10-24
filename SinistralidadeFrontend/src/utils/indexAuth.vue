@@ -74,7 +74,7 @@
       />
       <textarea
         v-else
-        :id="id2"
+        :id="id"
         ref="VueInputUi2"
         v-model="inputValue"
         v-bind="$attrs"
@@ -88,11 +88,11 @@
       />
       <label
         ref="label"
-        :for="id2"
+        :for="id"
         :class="error ? 'lm-text-danger' : null"
         :style="[colorStyle]"
         class="field-label"
-        @click="focusInput2"
+        @click="focusInput"
       >{{ hintValue || labelValue2 }}</label>
       <div v-if="loader" class="loader" :class="{ textarea }" />
     </div>
@@ -113,7 +113,6 @@ export default {
     disabled: { type: Boolean, default: false },
     dark: { type: Boolean, default: false },
     id: { type: String, default: "VueInputUi" },
-    id2: { type: String, default: "VueInputUi2" },
     size: { type: String, default: String },
     type: { type: String, default: "text" },
     readonly: { type: Boolean, default: false },
@@ -174,9 +173,6 @@ export default {
     focusInput() {
       this.$refs.VueInputUi.focus();
     },
-    focusInput2() {
-      this.$refs.VueInputUi2.focus();
-    },
     onFocus: function() {
       this.$emit("focus");
       this.isFocus = true;
@@ -191,9 +187,10 @@ export default {
       const username = "asd";
       const password = "asd";
       //getUserdata
+      //console.log($store.);
       if (password == this.password && username == this.address) {
         this.isConn = true;
-        this.$store.dispatch("addLogin", { text: this.address });
+        this.$store.dispatch("login", { text: this.address });
 
         console.log("is Connected!!");
       } else console.log("login failed!!");

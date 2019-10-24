@@ -1,8 +1,11 @@
 from django.db import models
 
 # Create your models here.
-class User(models.Model):
-    nr_cc = models.IntegerField(primary_key=True, editable=True)
-    username = models.TextField(max_length=50)
-    email = models.TextField(max_length=50)
-    distrito = models.TextField(max_length=150)
+
+
+class utilizador(models.Model):
+    cc = models.IntegerField(primary_key=True, editable=True)
+    nome = models.CharField(max_length=50)
+    palavrapasse = models.CharField(max_length=50)
+    ocupacao = models.CharField(max_length=50)
+    n_distrito = models.CharField(max_length=150)
