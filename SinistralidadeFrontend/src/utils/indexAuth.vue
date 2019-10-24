@@ -74,7 +74,7 @@
       />
       <textarea
         v-else
-        :id="id"
+        :id="id2"
         ref="VueInputUi2"
         v-model="inputValue"
         v-bind="$attrs"
@@ -88,11 +88,11 @@
       />
       <label
         ref="label"
-        :for="id"
+        :for="id2"
         :class="error ? 'lm-text-danger' : null"
         :style="[colorStyle]"
         class="field-label"
-        @click="focusInput"
+        @click="focusInput2"
       >{{ hintValue || labelValue2 }}</label>
       <div v-if="loader" class="loader" :class="{ textarea }" />
     </div>
@@ -113,6 +113,7 @@ export default {
     disabled: { type: Boolean, default: false },
     dark: { type: Boolean, default: false },
     id: { type: String, default: "VueInputUi" },
+    id2: { type: String, default: "VueInputUi2" },
     size: { type: String, default: String },
     type: { type: String, default: "text" },
     readonly: { type: Boolean, default: false },
@@ -172,6 +173,9 @@ export default {
   methods: {
     focusInput() {
       this.$refs.VueInputUi.focus();
+    },
+    focusInput2() {
+      this.$refs.VueInputUi2.focus();
     },
     onFocus: function() {
       this.$emit("focus");

@@ -72,24 +72,24 @@
         </button>
         <div class="dropdown-content" style="max-height:100px;
    overflow:auto;">
-          <a @click="myInput2='Aveiro' && checkNull" href="#">Aveiro</a>
-          <a @click="myInput2='Braga' && checkNull" href="#">Braga</a>
-          <a @click="myInput2='Bragança' && checkNull" href="#">Bragança</a>
-          <a @click="myInput2='Beja' && checkNull" href="#">Beja</a>
-          <a @click="myInput2='Castelo Branco' && checkNull" href="#">Castelo Branco</a>
-          <a @click="myInput2='Coimbra' && checkNull" href="#">Coimbra</a>
-          <a @click="myInput2='Évora' && checkNull" href="#">Évora</a>
-          <a @click="myInput2='Faro' && checkNull" href="#">Faro</a>
-          <a @click="myInput2='Guarda' && checkNull" href="#">Guarda</a>
-          <a @click="myInput2='Leiria' && checkNull" href="#">Leiria</a>
-          <a @click="myInput2='Lisboa' && checkNull" href="#">Lisboa</a>
-          <a @click="myInput2='Portalegre' && checkNull" href="#">Portalegre</a>
-          <a @click="myInput2='Porto' && checkNull" href="#">Porto</a>
-          <a @click="myInput2='Santarém' && checkNull" href="#">Santarém</a>
-          <a @click="myInput2='Setúbal' && checkNull" href="#">Setúbal</a>
-          <a @click="myInput2='Viana do Castelo' && checkNull" href="#">Viana do Castelo</a>
-          <a @click="myInput2='Vila Real' && checkNull" href="#">Vila Real</a>
-          <a @click="myInput2='Viseu' && checkNull" href="#">Viseu</a>
+          <a @click="myInput2='Aveiro' " href="#">Aveiro</a>
+          <a @click="myInput2='Braga'" href="#">Braga</a>
+          <a @click="myInput2='Bragança'" href="#">Bragança</a>
+          <a @click="myInput2='Beja'" href="#">Beja</a>
+          <a @click="myInput2='Castelo Branco' " href="#">Castelo Branco</a>
+          <a @click="myInput2='Coimbra'" href="#">Coimbra</a>
+          <a @click="myInput2='Évora' " href="#">Évora</a>
+          <a @click="myInput2='Faro' " href="#">Faro</a>
+          <a @click="myInput2='Guarda' " href="#">Guarda</a>
+          <a @click="myInput2='Leiria' " href="#">Leiria</a>
+          <a @click="myInput2='Lisboa'" href="#">Lisboa</a>
+          <a @click="myInput2='Portalegre'" href="#">Portalegre</a>
+          <a @click="myInput2='Porto'" href="#">Porto</a>
+          <a @click="myInput2='Santarém' " href="#">Santarém</a>
+          <a @click="myInput2='Setúbal' " href="#">Setúbal</a>
+          <a @click="myInput2='Viana do Castelo' " href="#">Viana do Castelo</a>
+          <a @click="myInput2='Vila Real' " href="#">Vila Real</a>
+          <a @click="myInput2='Viseu'" href="#">Viseu</a>
         </div>
       </div>
       <p>&nbsp;</p>
