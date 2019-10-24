@@ -167,6 +167,9 @@ export default {
         hint += ` *`;
       }
       return hint;
+    },
+    user() {
+      return this.$store.state.user;
     }
   },
   methods: {
@@ -184,16 +187,13 @@ export default {
     isConnected: function() {
       console.log(this.address);
       console.log(this.password);
-      const username = "asd";
-      const password = "asd";
-      //getUserdata
-      //console.log($store.);
-      if (password == this.password && username == this.address) {
-        this.isConn = true;
-        this.$store.dispatch("login", { text: this.address });
+      this.$store.dispatch("get_user", { text: this.address });
+      console.log(this.user);
 
-        console.log("is Connected!!");
-      } else console.log("login failed!!");
+      this.isConn = true;
+
+      console.log("is Connected!!");
+      console.log("login failed!!");
     }
   }
 };

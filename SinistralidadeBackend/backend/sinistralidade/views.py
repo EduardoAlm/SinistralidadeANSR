@@ -6,7 +6,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate, login
-
 from .models import utilizador
 from .serializers import utilizadorSerializer
 
@@ -26,6 +25,7 @@ class UserGetView(APIView):
         if id is not None:
             user = utilizador.objects.filter(cc=cc)
             serializer = utilizadorSerializer(user, many=True)
+            print(serializer.data)
         return Response(serializer.data)
 
 

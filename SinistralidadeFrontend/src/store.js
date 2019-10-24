@@ -8,15 +8,13 @@ const apiRoot = "http://localhost:8000";
 
 const store = new Vuex.Store({
   state: {
-    login: [],
-    registry: []
+    registry: [],
+    user: []
   },
   mutations: {
-    LOGIN: function(state, response) {
-      state.login.push(response.body);
-    },
     GET_USER: function(state, response) {
-      state.login.push(response.body);
+      console.log(response.body);
+      state.user = response.body;
     },
     POST_USER: function(state, response) {
       state.login.push(response.body);
@@ -41,16 +39,10 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    login(store) {
+    get_user(store, cc) {
       return api
-        .get(apiRoot + "/userlogin/")
-        .then(response => store.commit("LOGIN", response))
-        .catch(error => store.commit("API_FAIL", error));
-    },
-    get_user(store) {
-      return api
-        .get(apiRoot + "/user/(?P<cc>.*)/")
-        .then(response => store.commit("LOGIN", response))
+        .get(apiRoot + "/user/" + parseInt(cc["text"]) + "/")
+        .then(response => store.commit("GET_USER", response))
         .catch(error => store.commit("API_FAIL", error));
     },
     del_user(store, log) {

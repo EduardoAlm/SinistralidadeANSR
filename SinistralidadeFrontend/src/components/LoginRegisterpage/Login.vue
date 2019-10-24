@@ -7,8 +7,8 @@
         <div class="container">
           <div class="component-container">
             <VueInputUi
-              label="Insira o seu nome de utilizador"
-              label2="Insira a sua password"
+              label="Insira o seu número de cartão de cidadão"
+              label2="Insira a sua palavra passe"
               loader
             />
           </div>
