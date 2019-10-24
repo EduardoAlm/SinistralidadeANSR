@@ -10,12 +10,6 @@ from .models import utilizador
 from .serializers import utilizadorSerializer
 
 
-class HelloView(View):
-
-    def get(self, request, *args, **kwargs):
-        return HttpResponse('Hello, World!')
-
-
 class UserGetView(APIView):
     """
     List all snippets, or create a new snippet.
@@ -42,17 +36,6 @@ class UserPostView(APIView):
 class UserDeleteView(APIView):
 
     def destroy(self, request, cc=None):
-        if id is not None:
-            user = utilizador.objects.get(cc=cc)
-            user.delete()
+        user = utilizador.objects.filter(cc=cc)
+        user.delete()
         return Response(status=status.HTTP_200_OK)
-
-
-class UserLogInView(APIView):
-    def my_view(self, request):
-        nome = request.POST['nome']
-        palavrapasse = request.POST['palavrapasse']
-        user = authenticate(request, nome=nome, palavrapasse=palavrapasse)
-        print(user)
-        if user is not None:
-            return login(request, user)
