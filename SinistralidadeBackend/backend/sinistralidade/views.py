@@ -6,8 +6,70 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate, login
-from .models import utilizador
-from .serializers import utilizadorSerializer
+from .models import utilizador, distrito, concelho, acidente
+from .serializers import utilizadorSerializer, distritoSerializer, concelhoSerializer, acidenteSerializer
+
+# --------------------- DISTRITO FUNCTIONS------------------------------------------
+
+
+class DistritoGetView(APIView):
+    def get(self, request, format=None, nome=None):
+        if nome is not None:
+            dist = distrito.objects.filter(nome=nome)
+            serializer = distritoSerializer(dist, many=True)
+            print(serializer.data)
+        return Response(serializer.data)
+
+
+class DistritoPostView(APIView):
+
+    def post(self, request, format=None):
+        serializer = distritoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DistritoDeleteView(APIView):
+
+    def destroy(self, request, nome=None):
+        dist = distrito.objects.filter(nome=nome)
+        dist.delete()
+        return Response(status=status.HTTP_200_OK)
+
+
+# -----------------------CONCELHO FUNCTIONS-----------------------------------------
+
+
+class ConcelhoGetView(APIView):
+    def get(self, request, format=None, nome=None):
+        if nome is not None:
+            conc = concelho.objects.filter(nome=nome)
+            serializer = concelhoSerializer(conc, many=True)
+            print(serializer.data)
+        return Response(serializer.data)
+
+
+class ConcelhoPostView(APIView):
+
+    def post(self, request, format=None):
+        serializer = concelhoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ConcelhoDeleteView(APIView):
+
+    def destroy(self, request, nome=None):
+        conc = concelho.objects.filter(nome=nome)
+        conc.delete()
+        return Response(status=status.HTTP_200_OK)
+
+
+# ----------------------------------USER FUNCTIONS--------------------------------
 
 
 class UserGetView(APIView):
@@ -15,7 +77,7 @@ class UserGetView(APIView):
     List all snippets, or create a new snippet.
     """
 
-    def get(self, request, format=None, cc=None, palavrapasse=None):
+    def get(self, request, format=None, cc=None):
         if id is not None:
             user = utilizador.objects.filter(cc=cc)
             serializer = utilizadorSerializer(user, many=True)
@@ -38,4 +100,37 @@ class UserDeleteView(APIView):
     def destroy(self, request, cc=None):
         user = utilizador.objects.filter(cc=cc)
         user.delete()
+        return Response(status=status.HTTP_200_OK)
+
+
+# ------------------------------------ACIDENTE FUNCTIONS------------------------------
+
+class AcidenteGetView(APIView):
+    """
+    List all snippets, or create a new snippet.
+    """
+
+    def get(self, request, format=None, concelho=None):
+        if concelho is not None:
+            acid = acidente.objects.filter(concelho=concelho)
+            serializer = acidenteSerializer(acid, many=True)
+            print(serializer.data)
+        return Response(serializer.data)
+
+
+class AcidentePostView(APIView):
+
+    def post(self, request, format=None):
+        serializer = acidenteSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AcidenteDeleteView(APIView):
+
+    def destroy(self, request, id=None):
+        acid = acid.objects.filter(id=id)
+        acid.delete()
         return Response(status=status.HTTP_200_OK)
