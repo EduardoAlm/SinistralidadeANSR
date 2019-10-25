@@ -4,7 +4,7 @@ import Login from "./views/Login.vue";
 import Register from "./views/Register.vue";
 import Home from "./views/Home.vue";
 import AccountInfo from "./views/AccountInfo.vue";
-
+import MainUserComponent from "./views/MainUserComponent.vue";
 Vue.use(Router);
 
 export const router = new Router({
@@ -28,6 +28,11 @@ export const router = new Router({
       path: "/accInfo",
       name: "AccountInfo",
       component: AccountInfo
+    },
+    {
+      path: "/mainUser",
+      name: "MainUserComponent",
+      component: MainUserComponent
     }
   ]
 });

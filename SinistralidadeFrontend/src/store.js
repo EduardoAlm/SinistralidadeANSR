@@ -45,34 +45,16 @@ const store = new Vuex.Store({
         .then(response => store.commit("GET_USER", response))
         .catch(error => store.commit("API_FAIL", error));
     },
-    del_user(store, log) {
-      return api
+    async del_user(store, log) {
+      return await api
         .post(apiRoot + "/login/", log)
         .then(response => store.commit("ADD_LOGIN", response))
-        .catch(error => store.commit("API_FAIL", error));
-    },
-    clearLogin(store) {
-      return api
-        .delete(apiRoot + "/login/clear_login/")
-        .then(response => store.commit("CLEAR_LOGIN", response))
-        .catch(error => store.commit("API_FAIL", error));
-    },
-    getRegistry(store) {
-      return api
-        .get(apiRoot + "/registry/")
-        .then(response => store.commit("GET_REGISTRY", response))
         .catch(error => store.commit("API_FAIL", error));
     },
     async post_user(store, reg) {
       return await api
         .post(apiRoot + "/register/", reg)
         .then(response => store.commit("ADD_REGISTRY", response))
-        .catch(error => store.commit("API_FAIL", error));
-    },
-    clearRegistry(store) {
-      return api
-        .delete(apiRoot + "/registry/clear_registry/")
-        .then(response => store.commit("CLEAR_REGISTRY", response))
         .catch(error => store.commit("API_FAIL", error));
     }
   }

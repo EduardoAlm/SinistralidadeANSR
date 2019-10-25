@@ -13,13 +13,11 @@
       size
     ]"
     class="field vue-input-ui"
-    @click="focusInput"
   >
     <div>
       <input
         v-if="!textarea"
         :id="address"
-        ref="VueInputUi"
         v-model="address"
         required
         v-bind="$attrs"
@@ -34,7 +32,6 @@
       <textarea
         v-else
         :id="id"
-        ref="VueInputUi"
         v-model="inputValue"
         v-bind="$attrs"
         :placeholder="labelValue"
@@ -51,7 +48,6 @@
         :class="error ? 'lm-text-danger' : null"
         :style="[colorStyle]"
         class="field-label"
-        @click="focusInput"
       >{{ hintValue || labelValue }}</label>
       <div v-if="loader" class="loader" :class="{ textarea }" />
     </div>
@@ -60,7 +56,6 @@
       <input
         v-if="!textarea"
         :id="password"
-        ref="VueInputUi2"
         v-model="password"
         required
         v-bind="$attrs"
@@ -75,7 +70,6 @@
       <textarea
         v-else
         :id="id"
-        ref="VueInputUi2"
         v-model="inputValue"
         v-bind="$attrs"
         :placeholder="labelValue2"
@@ -92,25 +86,19 @@
         :class="error ? 'lm-text-danger' : null"
         :style="[colorStyle]"
         class="field-label"
-        @click="focusInput"
       >{{ hintValue || labelValue2 }}</label>
       <div v-if="loader" class="loader" :class="{ textarea }" />
     </div>
-    <div v-if="isConn==false">
+    <div v-if="isConn==0">
       <button v-bind="$attrs" class="btn" style="margin-top: 20px;" @click="isConnected">Login</button>
     </div>
-    <div v-else-if="isConn">
+    <div v-else-if="isConn==1">
       <router-link class="w3-btn w3-wide" v-bind:key="link.id" :to="`${link.page}`">
-        <button
-          v-bind="$attrs"
-          class="btn"
-          style="margin-top: 20px;"
-          @click="reloadWind"
-        >Voltar à pàgina Inicial</button>
+        <button v-bind="$attrs" class="btn" style="margin-top: 10px;">Continuar</button>
       </router-link>
     </div>
 
-    <div v-if="isConn">
+    <div v-if="isConn==1">
       <div class="alert alert-success" style="margin-top:20px">
         <strong>Successo!</strong>
         Inicio de sessão efectuado com sucesso! Por favor volte à pàgina inicial.
@@ -152,9 +140,9 @@ export default {
       isFocus: false,
       address: "",
       password: "",
-      isConn: false,
+      isConn: 0,
       isFK: 0,
-      link: { id: 0, text: "SinistralidadeANSR", page: "/" }
+      link: { id: 0, text: "MainUserComponent", page: "/mainUser" }
     };
   },
   computed: {
@@ -200,9 +188,6 @@ export default {
     }
   },
   methods: {
-    focusInput() {
-      this.$refs.VueInputUi.focus();
-    },
     onFocus: function() {
       this.$emit("focus");
       this.isFocus = true;
@@ -219,11 +204,12 @@ export default {
           this.user[0].cc === parseInt(this.address) &&
           this.password === this.user[0].palavrapasse
         ) {
-          this.isConn = true;
           console.log("is Connected!!");
           this.isFK = 0;
           Cookies.set("loggedIn", 1);
           Cookies.set("loggedName", this.user[0].nome);
+          Cookies.set("stop", false);
+          this.isConn = Cookies.get("loggedIn");
         }
       } else {
         console.log("login failed!!");
@@ -232,9 +218,6 @@ export default {
         this.address = "";
         this.password = "";
       }
-    },
-    reloadWind: async function() {
-      await window.location.reload(true);
     }
   }
 };
