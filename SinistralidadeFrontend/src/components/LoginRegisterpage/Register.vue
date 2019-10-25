@@ -45,7 +45,7 @@
           <img :src="this.imageUrl" style="width: 16px; heigth: 15px" />
         </button>
         <div class="dropdown-content">
-          <a @click="myInput='Médico'" href="#">Médico</a>
+          <a @click="myInput='Hospital'" href="#">Hospital</a>
           <a @click="myInput='Policia'" href="#">Polícia</a>
           <a @click="myInput='Civil'" href="#">Civil</a>
         </div>
@@ -64,7 +64,7 @@
    overflow:auto;">
           <a @mouseleave="checkNull" @click="myInput2='Aveiro' " href="#">Aveiro</a>
           <a @mouseleave="checkNull" @click="myInput2='Braga'" href="#">Braga</a>
-          <a @mouseleave="checkNull" @click="myInput2='Bragança'" href="#">Bragança</a>
+          <a @mouseleave="checkNull" @click="myInput2='Braganca'" href="#">Bragança</a>
           <a @mouseleave="checkNull" @click="myInput2='Beja'" href="#">Beja</a>
           <a @mouseleave="checkNull" @click="myInput2='Castelo Branco' " href="#">Castelo Branco</a>
           <a @mouseleave="checkNull" @click="myInput2='Coimbra'" href="#">Coimbra</a>
