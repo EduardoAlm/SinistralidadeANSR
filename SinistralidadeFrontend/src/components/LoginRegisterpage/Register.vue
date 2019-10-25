@@ -24,16 +24,6 @@
         @keypress="checkNull"
       />
       <p>&nbsp;</p>
-      <h5>Email</h5>
-      <input
-        :id="email"
-        v-model="email"
-        @keypress="checkNull"
-        class="w3-input w3-border-5 w3-hover-border-light-green w3-round w3-light-grey"
-        style="border:2px solid grey"
-        type="email"
-      />
-      <p>&nbsp;</p>
       <h5>Password</h5>
       <input
         :id="password"
@@ -70,26 +60,26 @@
           {{this.myInput2}}
           <img :src="this.imageUrl" style="width: 16px; heigth: 15px" />
         </button>
-        <div class="dropdown-content" style="max-height:100px;
+        <div class="dropdown-content" style="max-height:150px;
    overflow:auto;">
-          <a @click="myInput2='Aveiro' " href="#">Aveiro</a>
-          <a @click="myInput2='Braga'" href="#">Braga</a>
-          <a @click="myInput2='Bragança'" href="#">Bragança</a>
-          <a @click="myInput2='Beja'" href="#">Beja</a>
-          <a @click="myInput2='Castelo Branco' " href="#">Castelo Branco</a>
-          <a @click="myInput2='Coimbra'" href="#">Coimbra</a>
-          <a @click="myInput2='Évora' " href="#">Évora</a>
-          <a @click="myInput2='Faro' " href="#">Faro</a>
-          <a @click="myInput2='Guarda' " href="#">Guarda</a>
-          <a @click="myInput2='Leiria' " href="#">Leiria</a>
-          <a @click="myInput2='Lisboa'" href="#">Lisboa</a>
-          <a @click="myInput2='Portalegre'" href="#">Portalegre</a>
-          <a @click="myInput2='Porto'" href="#">Porto</a>
-          <a @click="myInput2='Santarém' " href="#">Santarém</a>
-          <a @click="myInput2='Setúbal' " href="#">Setúbal</a>
-          <a @click="myInput2='Viana do Castelo' " href="#">Viana do Castelo</a>
-          <a @click="myInput2='Vila Real' " href="#">Vila Real</a>
-          <a @click="myInput2='Viseu'" href="#">Viseu</a>
+          <a @mouseleave="checkNull" @click="myInput2='Aveiro' " href="#">Aveiro</a>
+          <a @mouseleave="checkNull" @click="myInput2='Braga'" href="#">Braga</a>
+          <a @mouseleave="checkNull" @click="myInput2='Bragança'" href="#">Bragança</a>
+          <a @mouseleave="checkNull" @click="myInput2='Beja'" href="#">Beja</a>
+          <a @mouseleave="checkNull" @click="myInput2='Castelo Branco' " href="#">Castelo Branco</a>
+          <a @mouseleave="checkNull" @click="myInput2='Coimbra'" href="#">Coimbra</a>
+          <a @mouseleave="checkNull" @click="myInput2='Evora' " href="#">Évora</a>
+          <a @mouseleave="checkNull" @click="myInput2='Faro' " href="#">Faro</a>
+          <a @mouseleave="checkNull" @click="myInput2='Guarda' " href="#">Guarda</a>
+          <a @mouseleave="checkNull" @click="myInput2='Leiria' " href="#">Leiria</a>
+          <a @mouseleave="checkNull" @click="myInput2='Lisboa'" href="#">Lisboa</a>
+          <a @mouseleave="checkNull" @click="myInput2='Portalegre'" href="#">Portalegre</a>
+          <a @mouseleave="checkNull" @click="myInput2='Porto'" href="#">Porto</a>
+          <a @mouseleave="checkNull" @click="myInput2='Santarem' " href="#">Santarém</a>
+          <a @mouseleave="checkNull" @click="myInput2='Setubal' " href="#">Setúbal</a>
+          <a @mouseleave="checkNull" @click="myInput2='Viana do Castelo' " href="#">Viana do Castelo</a>
+          <a @mouseleave="checkNull" @click="myInput2='Vila Real' " href="#">Vila Real</a>
+          <a @mouseleave="checkNull" @click="myInput2='Viseu'" href="#">Viseu</a>
         </div>
       </div>
       <p>&nbsp;</p>
@@ -117,7 +107,6 @@ export default {
   data: function() {
     return {
       password: "",
-      email: "",
       userName: "",
       nCC: 0,
       successFlag: false,
@@ -130,21 +119,33 @@ export default {
 
   methods: {
     checkNull() {
+      console.log(this.myInput);
+      console.log(this.myInput2);
+      console.log(this.userName);
+      console.log(this.nCC);
+      console.log(this.password);
       if (
         this.myInput != "" &&
         this.myInput2 != "" &&
-        this.email != "" &&
         this.userName != "" &&
         this.nCC > 1000 &&
         this.password != ""
       ) {
         this.registFlag = true;
+      } else {
+        this.registFlag = false;
       }
-      this.registFlag = false;
     },
-    registration() {
+    registration: async function() {
+      var dict = {};
+      dict["cc"] = this.nCC;
+      dict["nome"] = this.userName;
+      dict["palavrapasse"] = this.password;
+      dict["ocupacao"] = this.myInput;
+      dict["n_distrito"] = this.myInput2;
+
+      console.log(await this.$store.dispatch("post_user", dict));
       this.password = "";
-      this.email = "";
       this.userName = "";
       this.nCC = 0;
       this.registFlag = false;

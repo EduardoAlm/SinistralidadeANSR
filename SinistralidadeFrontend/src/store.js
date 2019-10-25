@@ -63,9 +63,9 @@ const store = new Vuex.Store({
         .then(response => store.commit("GET_REGISTRY", response))
         .catch(error => store.commit("API_FAIL", error));
     },
-    addRegistry(store, reg) {
-      return api
-        .post(apiRoot + "/registry/", reg)
+    async post_user(store, reg) {
+      return await api
+        .post(apiRoot + "/register/", reg)
         .then(response => store.commit("ADD_REGISTRY", response))
         .catch(error => store.commit("API_FAIL", error));
     },

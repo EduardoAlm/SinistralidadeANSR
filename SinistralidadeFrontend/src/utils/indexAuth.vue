@@ -96,13 +96,24 @@
       >{{ hintValue || labelValue2 }}</label>
       <div v-if="loader" class="loader" :class="{ textarea }" />
     </div>
-    <router-link class="w3-btn w3-wide" v-bind:key="link.id" :to="`${link.page}`">
+    <div v-if="isConn==false">
       <button v-bind="$attrs" class="btn" style="margin-top: 20px;" @click="isConnected">Login</button>
-    </router-link>
+    </div>
+    <div v-else-if="isConn">
+      <router-link class="w3-btn w3-wide" v-bind:key="link.id" :to="`${link.page}`">
+        <button
+          v-bind="$attrs"
+          class="btn"
+          style="margin-top: 20px;"
+          @click="reloadWind"
+        >Voltar à pàgina Inicial</button>
+      </router-link>
+    </div>
+
     <div v-if="isConn">
       <div class="alert alert-success" style="margin-top:20px">
         <strong>Successo!</strong>
-        Inicio de sessão efectuado com sucesso!
+        Inicio de sessão efectuado com sucesso! Por favor volte à pàgina inicial.
       </div>
     </div>
     <div class="alert alert-danger" style="margin-top:20px" v-else-if="isFK==1&&isConn==false">
@@ -213,7 +224,6 @@ export default {
           this.isFK = 0;
           Cookies.set("loggedIn", 1);
           Cookies.set("loggedName", this.user[0].nome);
-          window.location.reload(true);
         }
       } else {
         console.log("login failed!!");
@@ -222,6 +232,9 @@ export default {
         this.address = "";
         this.password = "";
       }
+    },
+    reloadWind: async function() {
+      await window.location.reload(true);
     }
   }
 };
