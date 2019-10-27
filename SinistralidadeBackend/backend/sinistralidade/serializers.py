@@ -124,3 +124,33 @@ class acidenteSerializer(serializers.Serializer):
         aciden = acidente(**validated_data)
         aciden.save()
         return aciden
+
+
+class historico (serializers.Serializer):
+    id = serializers.IntegerField()
+    datahora = serializers.DateTimeField()
+    cc_user = serializers.IntegerField()
+    id_acidente = serializers.IntegerField()
+
+    def update(self, instance, validated_data):
+        """
+        Override
+        """
+        print("This is an update.")
+        pass
+
+    def validate(self, attrs):
+        """
+        Validate the model attributes
+        """
+        for attr in attrs:
+            print(attr)
+        return attrs
+
+    def create(self, validated_data):
+        """
+        Create the model object
+        """
+        hist = historico(**validated_data)
+        hist.save()
+        return hist

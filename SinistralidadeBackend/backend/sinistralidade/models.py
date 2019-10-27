@@ -29,3 +29,10 @@ class acidente(models.Model):
     via = models.CharField(max_length=150)
     km = models.CharField(max_length=150)
     natureza = models.CharField(max_length=150)
+
+
+class historico (models.Model):
+    id = models.AutoField(primary_key=True)
+    datahora = models.DateTimeField(auto_now_add=True)
+    cc_user = models.IntegerField()
+    id_acidente = models.IntegerField()
