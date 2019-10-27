@@ -8,30 +8,24 @@ const apiRoot = "http://localhost:8000";
 
 const store = new Vuex.Store({
   state: {
-    registry: [],
+    acidentes: [],
     user: []
   },
   mutations: {
     GET_USER: function(state, response) {
-      console.log(response.body);
+      console.log(state.user);
       state.user = response.body;
     },
     POST_USER: function(state, response) {
-      state.login.push(response.body);
+      state.user.push(response.body);
     },
     DEL_USER: function(state) {
-      const login = state.login;
-      login.splice(0, login.length);
+      const user = state.user;
+      user.splice(0, user.length);
     },
-    GET_REGISTRY: function(state, response) {
-      state.resgistry = response.body;
-    },
-    ADD_REGISTRY: function(state, response) {
-      state.registry.push(response.body);
-    },
-    CLEAR_REGISTRY: function(state) {
-      const registry = state.registry;
-      registry.splice(0, registry.length);
+    GET_ACIDENTES: function(state, response) {
+      console.log(response.body);
+      state.acidentes = response.body;
     },
     // Note that we added one more for logging out errors.
     API_FAIL: function(state, error) {
@@ -47,14 +41,20 @@ const store = new Vuex.Store({
     },
     async del_user(store, log) {
       return await api
-        .post(apiRoot + "/login/", log)
-        .then(response => store.commit("ADD_LOGIN", response))
+        .post(apiRoot + "/user/", log)
+        .then(response => store.commit("DEL_USER", response))
         .catch(error => store.commit("API_FAIL", error));
     },
     async post_user(store, reg) {
       return await api
         .post(apiRoot + "/register/", reg)
-        .then(response => store.commit("ADD_REGISTRY", response))
+        .then(response => store.commit("POST_USER", response))
+        .catch(error => store.commit("API_FAIL", error));
+    },
+    async get_acidentes(store, concelho) {
+      return await api
+        .get(apiRoot + "/acidentes/" + concelho + "/")
+        .then(response => store.commit("GET_ACIDENTES", response))
         .catch(error => store.commit("API_FAIL", error));
     }
   }

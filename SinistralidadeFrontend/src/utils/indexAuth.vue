@@ -93,7 +93,7 @@
       <button v-bind="$attrs" class="btn" style="margin-top: 20px;" @click="isConnected">Login</button>
     </div>
     <div v-else-if="isConn==1">
-      <router-link class="w3-btn w3-wide" v-bind:key="link.id" :to="`${link.page}`">
+      <router-link v-bind:key="link.id" :to="`${link.page}`">
         <button v-bind="$attrs" class="btn" style="margin-top: 10px;">Continuar</button>
       </router-link>
     </div>
@@ -199,6 +199,8 @@ export default {
     isConnected: async function() {
       await this.$store.dispatch("get_user", { text: this.address });
       console.log(this.user);
+      console.log(JSON.stringify(this.user));
+      localStorage.setItem("userInfo", JSON.stringify(this.user));
       if (this.user.length > 0) {
         if (
           this.user[0].cc === parseInt(this.address) &&

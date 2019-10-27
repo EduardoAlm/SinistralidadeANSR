@@ -56,7 +56,7 @@ export default {
         {
           id: 2,
           text: Cookies.get("loggedName"),
-          page: "/accInfo"
+          page: "/mainUser"
         }
       ]
     };
