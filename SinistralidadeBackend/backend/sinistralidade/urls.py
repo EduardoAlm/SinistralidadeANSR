@@ -18,6 +18,7 @@ from .views import (
     ConcelhoPostView,
     ConcelhoDeleteView,
     ConcelhoGetAllView,
+    ConcelhoGetDistView,
     AcidenteGetView,
     AcidentePostView,
     AcidenteDeleteView,
@@ -45,10 +46,14 @@ urlpatterns = [
     url(r'^concelho/(?P<nome>.*)/$', ConcelhoGetView.as_view(), name='get_concelho'),
     url(r'^concelhodel/(?P<nome>.*)/$',
         ConcelhoDeleteView.as_view(), name='del_concelho'),
-    url(r'^acidente/(?P<dist>.*)/$',
+    url(r'^acidente/(?P<concelho>.*)/$',
         AcidenteGetView.as_view(), name='get_acidente'),
     url(r'^acidentedel/(?P<id>.*)/$',
         AcidenteDeleteView.as_view(), name='del_acidente'),
 
-    path('concelhoall/', ConcelhoGetAllView.as_view(), name='get_concelhoall')
+    path('concelhoall/', ConcelhoGetAllView.as_view(), name='get_concelhoall'),
+    url(r'^concelhodist/(?P<distrito>.*)/$',
+        ConcelhoGetDistView.as_view(), name='get_concelhodist'),
+
+
 ]

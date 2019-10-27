@@ -53,6 +53,14 @@ class ConcelhoGetView(APIView):
         return Response(serializer.data)
 
 
+class ConcelhoGetDistView(APIView):
+    def get(self, request, format=None, distrito=None):
+        conc = concelho.objects.filter(n_distrito=distrito)
+        serializer = concelhoSerializer(conc, many=True)
+        print(serializer.data)
+        return Response(serializer.data)
+
+
 class ConcelhoGetAllView(APIView):
     def get(self, request, format=None):
         conc = concelho.objects.all()
@@ -121,17 +129,15 @@ class UserDeleteView(APIView):
 # ------------------------------------ACIDENTE FUNCTIONS------------------------------
 
 
-# class AcidenteGetView(APIView):
+class AcidenteGetView(APIView):
     """
     List all snippets, or create a new snippet.
     """
 
-   # def get(self, request, format=None, dist=None):
-
-    #    acid = acidente.objects.filter(
-    #        concelho=concelho.objects.filter(n_distrito=dist))
-    #    serializer = acidenteSerializer(acid, many=True)
-    #    return Response(serializer.data)
+    def get(self, request, format=None, concelho=None):
+        acid = acidente.objects.filter(concelho=concelho)
+        serializer = acidenteSerializer(acid, many=True)
+        return Response(serializer.data)
 
 
 class AcidenteGetIdView(APIView):
