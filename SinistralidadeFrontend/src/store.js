@@ -9,7 +9,9 @@ const apiRoot = "http://localhost:8000";
 const store = new Vuex.Store({
   state: {
     acidentes: [],
-    user: []
+    user: [],
+    allusers: [],
+    allconcelhos: []
   },
   mutations: {
     GET_USER: function(state, response) {
@@ -26,6 +28,14 @@ const store = new Vuex.Store({
     GET_ACIDENTES: function(state, response) {
       console.log(response.body);
       state.acidentes = response.body;
+    },
+    GET_ALLUSER: function(state, response) {
+      console.log(response.body);
+      state.allusers = response.body;
+    },
+    GET_ALLCONCELHO: function(state, response) {
+      console.log(response.body);
+      state.allconcelhos = response.body;
     },
     // Note that we added one more for logging out errors.
     API_FAIL: function(state, error) {
@@ -51,10 +61,22 @@ const store = new Vuex.Store({
         .then(response => store.commit("POST_USER", response))
         .catch(error => store.commit("API_FAIL", error));
     },
-    async get_acidentes(store, concelho) {
+    async get_acidente(store, concelho) {
       return await api
-        .get(apiRoot + "/acidentes/" + concelho + "/")
+        .get(apiRoot + "/acidente/" + concelho + "/")
         .then(response => store.commit("GET_ACIDENTES", response))
+        .catch(error => store.commit("API_FAIL", error));
+    },
+    async get_alluser(store) {
+      return await api
+        .get(apiRoot + "/userall/")
+        .then(response => store.commit("GET_ALLUSER", response))
+        .catch(error => store.commit("API_FAIL", error));
+    },
+    async get_concelhoall(store) {
+      return await api
+        .get(apiRoot + "/concelhoall/")
+        .then(response => store.commit("GET_ALLCONCELHO", response))
         .catch(error => store.commit("API_FAIL", error));
     }
   }
