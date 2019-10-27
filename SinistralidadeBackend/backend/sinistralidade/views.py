@@ -8,6 +8,8 @@ from rest_framework import status
 from django.contrib.auth import authenticate, login
 from .models import utilizador, distrito, concelho, acidente
 from .serializers import utilizadorSerializer, distritoSerializer, concelhoSerializer, acidenteSerializer
+from django.db import connection
+from django.db import transaction
 
 # --------------------- DISTRITO FUNCTIONS------------------------------------------
 
@@ -33,7 +35,7 @@ class DistritoPostView(APIView):
 
 class DistritoDeleteView(APIView):
 
-    def destroy(self, request, nome=None):
+    def delete(self, request, nome=None):
         dist = distrito.objects.filter(nome=nome)
         dist.delete()
         return Response(status=status.HTTP_200_OK)
@@ -63,7 +65,7 @@ class ConcelhoPostView(APIView):
 
 class ConcelhoDeleteView(APIView):
 
-    def destroy(self, request, nome=None):
+    def delete(self, request, nome=None):
         conc = concelho.objects.filter(nome=nome)
         conc.delete()
         return Response(status=status.HTTP_200_OK)
@@ -97,13 +99,13 @@ class UserPostView(APIView):
 
 class UserDeleteView(APIView):
 
-    def destroy(self, request, cc=None):
+    def delete(self, request, cc=None):
         user = utilizador.objects.filter(cc=cc)
         user.delete()
         return Response(status=status.HTTP_200_OK)
 
-
 # ------------------------------------ACIDENTE FUNCTIONS------------------------------
+
 
 class AcidenteGetView(APIView):
     """
@@ -114,7 +116,13 @@ class AcidenteGetView(APIView):
         if concelho is not None:
             acid = acidente.objects.filter(concelho=concelho)
             serializer = acidenteSerializer(acid, many=True)
-            print(serializer.data)
+        return Response(serializer.data)
+
+
+class AcidenteGetIdView(APIView):
+    def get(self, request, format=None, id=None):
+        acid = acidente.objects.filter(id=id)
+        serializer = acidenteSerializer(acid, many=True)
         return Response(serializer.data)
 
 
@@ -129,8 +137,14 @@ class AcidentePostView(APIView):
 
 
 class AcidenteDeleteView(APIView):
-
-    def destroy(self, request, id=None):
-        acid = acid.objects.filter(id=id)
+    def delete(self, request, id, format=None):
+        acid = acidente.objects.filter(id=id)
         acid.delete()
+        return Response(status=status.HTTP_200_OK)
+
+
+class AcidenteUpdateView (APIView):
+    def get(self, request, id, mortos, feridosg):
+        obj = acidente.objects.filter(id=id)
+        obj.update(mortos=mortos, feridosg=feridosg)
         return Response(status=status.HTTP_200_OK)
