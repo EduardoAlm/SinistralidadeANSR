@@ -11,6 +11,7 @@ from .views import (
     UserPostView,
     UserDeleteView,
     UserGetAllView,
+    UserUpdateView,
     DistritoGetView,
     DistritoPostView,
     DistritoDeleteView,
@@ -22,8 +23,9 @@ from .views import (
     AcidenteGetView,
     AcidentePostView,
     AcidenteDeleteView,
-    AcidenteUpdateView,
+    AcidenteUpdateHospitalView,
     AcidenteGetIdView,
+    AcidenteUpdateView,
 )
 
 urlpatterns = [
@@ -31,8 +33,8 @@ urlpatterns = [
     path('registerdist/', DistritoPostView.as_view(), name='post_distrito'),
     path('registerconc/', ConcelhoPostView.as_view(), name='post_concelho'),
     path('registeracidente/', AcidentePostView.as_view(), name='post_acidente'),
-    path('acidenteup/<int:id>/<int:mortos>/<int:feridosg>/',
-         AcidenteUpdateView.as_view(), name='update_acidente'),
+    path('acidenteuphospital/<int:id>/<int:mortos>/<int:feridosg>/',
+         AcidenteUpdateHospitalView.as_view(), name='update_acidentehospital'),
     path('acidenteid/<int:id>/',
          AcidenteGetIdView.as_view(), name='get_acidenteid'),
 
@@ -55,5 +57,9 @@ urlpatterns = [
     url(r'^concelhodist/(?P<distrito>.*)/$',
         ConcelhoGetDistView.as_view(), name='get_concelhodist'),
 
+    path('userupdate/<int:cc>/<str:nome>/<str:palavrapasse>/<str:ocupacao>/<str:n_distrito>/',
+         UserUpdateView.as_view(), name='user_updateall'),
+    path('acidenteupdate/<int:cc>/<str:concelho>/<int:mortos>/<int:feridosg>/<str:via>/<str:km>/<str:natureza>/',
+         AcidenteUpdateView.as_view(), name='update_acidente')
 
 ]

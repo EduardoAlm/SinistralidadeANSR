@@ -126,7 +126,15 @@ class UserDeleteView(APIView):
         user.delete()
         return Response(status=status.HTTP_200_OK)
 
-# ------------------------------------ACIDENTE FUNCTIONS------------------------------
+
+class UserUpdateView(APIView):
+    def get(self, request, cc, nome, palavrapasse, ocupacao, n_distrito):
+        user = utilizador.objects.filter(cc=cc)
+        user.update(nome=nome, palavrapasse=palavrapasse,
+                    ocupacao=ocupacao, n_distrito=n_distrito)
+        return Response(status=status.HTTP_200_OK)
+
+        # ------------------------------------ACIDENTE FUNCTIONS------------------------------
 
 
 class AcidenteGetView(APIView):
@@ -164,8 +172,16 @@ class AcidenteDeleteView(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
-class AcidenteUpdateView (APIView):
+class AcidenteUpdateHospitalView (APIView):
     def get(self, request, id, mortos, feridosg):
         obj = acidente.objects.filter(id=id)
         obj.update(mortos=mortos, feridosg=feridosg)
+        return Response(status=status.HTTP_200_OK)
+
+
+class AcidenteUpdateView(APIView):
+    def get(self, request, id, concelho, mortos, feridosg, via, km, natureza):
+        obj = acidente.objects.filter(id=id)
+        obj.update(concelho=concelho, mortos=mortos,
+                   feridosg=feridosg, via=via, km=km, natureza=natureza)
         return Response(status=status.HTTP_200_OK)
