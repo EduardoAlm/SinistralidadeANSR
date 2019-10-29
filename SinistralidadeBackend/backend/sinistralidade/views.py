@@ -10,6 +10,7 @@ from .models import utilizador, distrito, concelho, acidente
 from .serializers import utilizadorSerializer, distritoSerializer, concelhoSerializer, acidenteSerializer
 from django.db import connection
 from django.db import transaction, DatabaseError
+from django.http import JsonResponse
 
 # --------------------- DISTRITO FUNCTIONS------------------------------------------
 
@@ -39,7 +40,7 @@ class DistritoPostView(APIView):
 
 class DistritoDeleteView(APIView):
     @transaction.atomic
-    def get(self, request, nome=None):
+    def post(self, request, nome=None):
         dist = distrito.objects.select_for_update().filter(nome=nome)
         try:
             with transaction.atomic():
@@ -92,7 +93,7 @@ class ConcelhoPostView(APIView):
 
 class ConcelhoDeleteView(APIView):
     @transaction.atomic
-    def get(self, request, nome=None):
+    def post(self, request, nome=None):
         conc = concelho.objects.select_for_update().filter(nome=nome)
         try:
             with transaction.atomic():
@@ -200,7 +201,7 @@ class AcidentePostView(APIView):
 
 class AcidenteDeleteView(APIView):
     @transaction.atomic
-    def get(self, request, id, format=None):
+    def post(self, request, id, format=None):
         acid = acidente.objects.select_for_update().get(id=id)
         try:
             with transaction.atomic():
@@ -233,4 +234,6 @@ class AcidenteUpdateView(APIView):
 class AcidenteGetLastID (APIView):
     def get(self, request):
         lastID = acidente.objects.latest('id')
-        return HttpResponse(lastID)
+        acid = acidente.objects.filter(id=lastID.id)
+        serializer = acidenteSerializer(acid, many=True)
+        return Response(serializer.data)
