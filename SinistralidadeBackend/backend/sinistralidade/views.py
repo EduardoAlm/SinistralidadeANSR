@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate, login
 from .models import utilizador, distrito, concelho, acidente
 from .serializers import utilizadorSerializer, distritoSerializer, concelhoSerializer, acidenteSerializer
 from django.db import connection
-from django.db import transaction
+from django.db import transaction, DatabaseError
 
 # --------------------- DISTRITO FUNCTIONS------------------------------------------
 
@@ -24,20 +24,28 @@ class DistritoGetView(APIView):
 
 
 class DistritoPostView(APIView):
-
+    @transaction.atomic
     def post(self, request, format=None):
         serializer = distritoSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            try:
+                with transaction.atomic():
+                    serializer.save()
+            except DatabaseError:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class DistritoDeleteView(APIView):
-
-    def delete(self, request, nome=None):
-        dist = distrito.objects.filter(nome=nome)
-        dist.delete()
+    @transaction.atomic
+    def get(self, request, nome=None):
+        dist = distrito.objects.select_for_update().filter(nome=nome)
+        try:
+            with transaction.atomic():
+                dist.delete()
+        except DatabaseError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_200_OK)
 
 
@@ -69,20 +77,28 @@ class ConcelhoGetAllView(APIView):
 
 
 class ConcelhoPostView(APIView):
-
+    @transaction.atomic
     def post(self, request, format=None):
         serializer = concelhoSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            try:
+                with transaction.atomic():
+                    serializer.save()
+            except DatabaseError:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ConcelhoDeleteView(APIView):
-
-    def delete(self, request, nome=None):
-        conc = concelho.objects.filter(nome=nome)
-        conc.delete()
+    @transaction.atomic
+    def get(self, request, nome=None):
+        conc = concelho.objects.select_for_update().filter(nome=nome)
+        try:
+            with transaction.atomic():
+                conc.delete()
+        except DatabaseError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_200_OK)
 
 
@@ -110,28 +126,41 @@ class UserGetAllView(APIView):
 
 
 class UserPostView(APIView):
-
+    @transaction.atomic
     def post(self, request, format=None):
         serializer = utilizadorSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            try:
+                with transaction.atomic():
+                    serializer.save()
+            except DatabaseError:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserDeleteView(APIView):
-
-    def delete(self, request, cc=None):
-        user = utilizador.objects.filter(cc=cc)
-        user.delete()
+    @transaction.atomic
+    def get(self, request, cc=None):
+        user = utilizador.objects.select_for_update().filter(cc=cc)
+        try:
+            with transaction.atomic():
+                user.delete()
+        except DatabaseError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_200_OK)
 
 
 class UserUpdateView(APIView):
+    @transaction.atomic
     def get(self, request, cc, nome, palavrapasse, ocupacao, n_distrito):
-        user = utilizador.objects.filter(cc=cc)
-        user.update(nome=nome, palavrapasse=palavrapasse,
-                    ocupacao=ocupacao, n_distrito=n_distrito)
+        user = utilizador.objects.select_for_update().filter(cc=cc)
+        try:
+            with transaction.atomic():
+                user.update(nome=nome, palavrapasse=palavrapasse,
+                            ocupacao=ocupacao, n_distrito=n_distrito)
+        except DatabaseError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_200_OK)
 
         # ------------------------------------ACIDENTE FUNCTIONS------------------------------
@@ -156,32 +185,46 @@ class AcidenteGetIdView(APIView):
 
 
 class AcidentePostView(APIView):
-
+    @transaction.atomic
     def post(self, request, format=None):
         serializer = acidenteSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            try:
+                with transaction.atomic():
+                    serializer.save()
+            except DatabaseError:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AcidenteDeleteView(APIView):
-    def delete(self, request, id, format=None):
-        acid = acidente.objects.filter(id=id)
-        acid.delete()
+    @transaction.atomic
+    def get(self, request, id, format=None):
+        acid = acidente.objects.select_for_update().get(id=id)
+        try:
+            with transaction.atomic():
+                acid.delete()
+        except DatabaseError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_200_OK)
 
 
 class AcidenteUpdateHospitalView (APIView):
+    @transaction.atomic
     def get(self, request, id, mortos, feridosg):
-        obj = acidente.objects.filter(id=id)
-        obj.update(mortos=mortos, feridosg=feridosg)
+        obj = acidente.objects.select_for_update().filter(id=id)
+        try:
+            with transaction.atomic():
+                obj.update(mortos=mortos, feridosg=feridosg)
+        except DatabaseError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_200_OK)
 
 
 class AcidenteUpdateView(APIView):
     def get(self, request, id, concelho, mortos, feridosg, via, km, natureza):
-        obj = acidente.objects.filter(id=id)
+        obj = acidente.objects.select_for_update().filter(id=id)
         obj.update(concelho=concelho, mortos=mortos,
                    feridosg=feridosg, via=via, km=km, natureza=natureza)
         return Response(status=status.HTTP_200_OK)

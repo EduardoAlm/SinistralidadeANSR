@@ -91,10 +91,12 @@ DATABASES = {
         'PASSWORD': '180796',
         'HOST': '188.251.5.91',
         'PORT': '5432',
+        'ATOMIC_REQUESTS': True,
     },
 
     'OPTIONS': {
         'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,
+        'timeout': 20,
     },
 }
 
