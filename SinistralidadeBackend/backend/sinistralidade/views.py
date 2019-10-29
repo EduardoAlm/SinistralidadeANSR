@@ -141,7 +141,7 @@ class UserPostView(APIView):
 
 class UserDeleteView(APIView):
     @transaction.atomic
-    def get(self, request, cc=None):
+    def post(self, request, cc=None):
         user = utilizador.objects.select_for_update().filter(cc=cc)
         try:
             with transaction.atomic():
@@ -228,3 +228,9 @@ class AcidenteUpdateView(APIView):
         obj.update(concelho=concelho, mortos=mortos,
                    feridosg=feridosg, via=via, km=km, natureza=natureza)
         return Response(status=status.HTTP_200_OK)
+
+
+class AcidenteGetLastID (APIView):
+    def get(self, request):
+        lastID = acidente.objects.latest('id')
+        return HttpResponse(lastID)

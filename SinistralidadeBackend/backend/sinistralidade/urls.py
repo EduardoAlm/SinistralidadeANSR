@@ -26,6 +26,7 @@ from .views import (
     AcidenteUpdateHospitalView,
     AcidenteGetIdView,
     AcidenteUpdateView,
+    AcidenteGetLastID,
 )
 
 urlpatterns = [
@@ -60,6 +61,8 @@ urlpatterns = [
     path('userupdate/<int:cc>/<str:nome>/<str:palavrapasse>/<str:ocupacao>/<str:n_distrito>/',
          UserUpdateView.as_view(), name='user_updateall'),
     path('acidenteupdate/<int:id>/<str:concelho>/<int:mortos>/<int:feridosg>/<str:via>/<str:km>/<str:natureza>/',
-         AcidenteUpdateView.as_view(), name='update_acidente')
+         AcidenteUpdateView.as_view(), name='update_acidente'),
+
+    path('acidentelastid', AcidenteGetLastID.as_view(), name='acidenteget_lastid'),
 
 ]

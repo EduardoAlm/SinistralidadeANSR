@@ -93,7 +93,7 @@ class utilizadorSerializer(serializers.Serializer):
 
 
 class acidenteSerializer(serializers.Serializer):
-    id = serializers.IntegerField(required=True)
+    id = serializers.IntegerField()
     concelho = serializers.CharField(required=True)
     datahora = serializers.DateTimeField(required=True)
     mortos = serializers.IntegerField(required=True)
