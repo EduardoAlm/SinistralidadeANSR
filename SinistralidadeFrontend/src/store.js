@@ -9,6 +9,7 @@ const apiRoot = "http://localhost:8000";
 const store = new Vuex.Store({
   state: {
     acidentes: [],
+    acidente: [],
     user: [],
     allusers: [],
     allconcelhos: []
@@ -39,6 +40,9 @@ const store = new Vuex.Store({
     },
     UPDATE_USERUPDATE: function(state, response) {
       console.log(response.body);
+    },
+    POST_ACIDENTE:  function(state, response) {
+      state.acidente.push(response.body);
     },
     UPDATE_ACIDENTE: function(state, response) {
       console.log(response.body);
@@ -97,15 +101,27 @@ const store = new Vuex.Store({
         .then(response => store.commit("UPDATE_USERUPDATE", response))
         .catch(error => store.commit("API_FAIL", error));
     },
-    async update_acidente(store, cc, concelho, mortos, feridosg, via, km, natureza) {
+    async post_acidente(store, ac) {
       return await api
-        .get(apiRoot + "/acidenteupdate/"+cc+"/"+concelho+"/"+mortos+"/"+feridosg+"/"+via+"/"+km+"/"+natureza+"/")
+        .post(apiRoot + "/registeracidente/", ac)
+        .then(response => store.commit("POST_ACIDENTE", response))
+        .catch(error => store.commit("API_FAIL", error));
+    },
+    async update_acidente(store, id, concelho, mortos, feridosg, via, km, natureza) {
+      console.log(concelho);
+      console.log(mortos);
+      console.log(feridosg);
+      console.log(via);
+      console.log(km);
+      console.log(natureza);
+      return await api
+        .get(apiRoot + "/acidenteupdate/"+id+"/"+concelho+"/"+mortos+"/"+feridosg+"/"+via+"/"+km+"/"+natureza+"/")
         .then(response => store.commit("UPDATE_ACIDENTE", response))
         .catch(error => store.commit("API_FAIL", error));
     },
     async del_acidente(store, id){
       return await api
-        .post(apiRoot + "/acidentedel/", id)
+        .post(apiRoot + "/acidentedel/" + parseInt(id)+"/")
         .then(response => store.commit("DEL_ACIDENTE", response))
         .catch(error => store.commit("API_FAIL", error));
     }
