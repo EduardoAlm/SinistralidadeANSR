@@ -3,16 +3,15 @@
     <div v-if="this.userInfo[0].ocupacao==='gestor'">
       <GestorComponent></GestorComponent>
     </div>
+    <div v-else-if="this.userInfo[0].ocupacao==='medico'"></div>
+    <div v-else-if="this.userInfo[0].ocupacao==='hospital'"></div>
+    <div v-else-if="this.userInfo[0].ocupacao==='civil'"></div>
     <p>&nbsp;</p>
     <router-link v-bind:key="link.id" :to="`${link.page}`">
       <button class="w3-button w3-green w3-round">Dados da Conta</button>
     </router-link>
     <p>&nbsp;</p>
   </div>
-  <!--  
-  <div v-else-if="this.user==='Medico'"></div>
-  <div v-else-if="this.user==='Hospital'"></div>
-  <div v-else-if="this.user==='Civil'"></div>-->
 </template>
 
 <script>
