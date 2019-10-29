@@ -82,7 +82,7 @@
               <img :src="this.imageUrl" style="width: 16px; heigth: 15px" />
             </button>
             <div class="dropdown-content" style="max-height:350px;
-        overflow:auto;">
+        overflow:auto;" disabled>
               <a v-for="c in this.concelhos" v-bind:key="c.id" @click="concelho=c.nome">{{c.nome}}</a>
             </div>
           </div>
@@ -122,6 +122,7 @@
             class="w3-input w3-border-5 w3-hover-border-green w3-round-large w3-light-grey"
             style="border:2px solid grey"
             type="text"
+            disabled
           />
           <hr style="border: 0.7px solid gray;" />
           <h5>Km:</h5>
@@ -131,6 +132,7 @@
             class="w3-input w3-border-5 w3-hover-border-green w3-round-large w3-light-grey"
             style="border:2px solid grey"
             type="text"
+            disabled
           />
           <hr style="border: 0.7px solid gray;" />
           <h5>Natureza:</h5>
@@ -140,6 +142,7 @@
             class="w3-input w3-border-5 w3-hover-border-green w3-round-large w3-light-grey"
             style="border:2px solid grey"
             type="text"
+            disabled
           />
         </div>
       </div>
@@ -245,13 +248,10 @@ export default {
     updateAcidente: async function() {
       var dict = {};
       dict["id"] = this.id;
-      dict["concelho"] = this.concelho;
       dict["mortos"] = this.mortos;
       dict["feridosg"] = this.feridosg;
-      dict["via"] = this.via;
-      dict["km"] = this.km;
-      dict["natureza"] = this.natureza;
-      console.log(await this.$store.dispatch("update_acidente", dict));
+
+      console.log(await this.$store.dispatch("update_acidentehospital", dict));
       this.myInput = this.concelho;
       this.getAc(this.concelho);
       this.id = 0;

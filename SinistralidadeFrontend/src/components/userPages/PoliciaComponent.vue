@@ -252,26 +252,15 @@ export default {
       //funcao para devolver o id do ultimo acidente registrado
       var dict = {};
       var date = new Date();
+      dict["id"] = this.id;
       dict["concelho"] = this.concelho;
-      dict["datahora"] =
-        date.getYear() +
-        "-" +
-        date.getMonth() +
-        "-" +
-        date.getDay() +
-        "T" +
-        date.getHours() +
-        ":" +
-        date.getMinutes() +
-        ":" +
-        date.getSeconds() +
-        "Z";
+      dict["datahora"] = date.toJSON();
       dict["mortos"] = this.mortos;
       dict["feridosg"] = this.feridosg;
       dict["via"] = this.via;
       dict["km"] = this.km;
       dict["natureza"] = this.natureza;
-
+      console.log(date.toJSON());
       console.log(await this.$store.dispatch("post_acidente", dict));
       this.myInput = this.concelho;
 

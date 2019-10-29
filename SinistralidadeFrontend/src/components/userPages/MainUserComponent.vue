@@ -1,15 +1,23 @@
 <template>
   <div>
     <div v-if="this.userInfo[0].ocupacao==='Gestor'">
+      <h1>Gestor</h1>
+      <p>&nbsp;</p>
       <GestorComponent></GestorComponent>
     </div>
     <div v-else-if="this.userInfo[0].ocupacao==='Policia'">
+      <h1>Policia</h1>
+      <p>&nbsp;</p>
       <PoliciaComponent></PoliciaComponent>
     </div>
     <div v-else-if="this.userInfo[0].ocupacao==='Hospital'">
+      <h1>Hospital</h1>
+      <p>&nbsp;</p>
       <HospitalComponent></HospitalComponent>
     </div>
     <div v-else>
+      <h1>Civil</h1>
+      <p>&nbsp;</p>
       <CivilComponent></CivilComponent>
     </div>
     <p>&nbsp;</p>

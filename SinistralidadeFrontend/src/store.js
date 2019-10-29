@@ -47,6 +47,9 @@ const store = new Vuex.Store({
     UPDATE_ACIDENTE: function(state, response) {
       console.log(response.body);
     },
+    UPDATE_ACIDENTEHOSPITAL: function(state, response) {
+      console.log(response.body);
+    },
     DEL_ACIDENTE: function(state, response) {
       console.log(response.body);
     },
@@ -93,20 +96,20 @@ const store = new Vuex.Store({
         .then(response => store.commit("GET_ALLCONCELHO", response))
         .catch(error => store.commit("API_FAIL", error));
     },
-    async user_updateall(store, cc, nome, palavrapasse, ocupacao, n_distrito) {
+    async user_updateall(store, dict) {
       return await api
         .get(
           apiRoot +
             "/userupdate/" +
-            cc +
+            dict["cc"] +
             "/" +
-            nome +
+            dict["nome"] +
             "/" +
-            palavrapasse +
+            dict["palavrapassedict"] +
             "/" +
-            ocupacao +
+            dict["ocupacao"] +
             "/" +
-            n_distrito +
+            dict["n_distrito"] +
             "/"
         )
         .then(response => store.commit("UPDATE_USERUPDATE", response))
@@ -139,6 +142,21 @@ const store = new Vuex.Store({
             "/"
         )
         .then(response => store.commit("UPDATE_ACIDENTE", response))
+        .catch(error => store.commit("API_FAIL", error));
+    },
+    async update_acidentehospital(store, dict) {
+      return await api
+        .get(
+          apiRoot +
+            "/acidenteuphospital/" +
+            parseInt(dict["id"]) +
+            "/" +
+            parseInt(dict["mortos"]) +
+            "/" +
+            parseInt(dict["feridosg"]) +
+            "/"
+        )
+        .then(response => store.commit("UPDATE_ACIDENTEHOSPITAL", response))
         .catch(error => store.commit("API_FAIL", error));
     },
     async del_acidente(store, id) {
