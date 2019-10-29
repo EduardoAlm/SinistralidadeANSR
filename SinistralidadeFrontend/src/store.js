@@ -41,13 +41,13 @@ const store = new Vuex.Store({
     UPDATE_USERUPDATE: function(state, response) {
       console.log(response.body);
     },
-    POST_ACIDENTE:  function(state, response) {
+    POST_ACIDENTE: function(state, response) {
       state.acidente.push(response.body);
     },
     UPDATE_ACIDENTE: function(state, response) {
       console.log(response.body);
-    }, 
-    DEL_ACIDENTE: function(state, response){
+    },
+    DEL_ACIDENTE: function(state, response) {
       console.log(response.body);
     },
     // Note that we added one more for logging out errors.
@@ -64,10 +64,8 @@ const store = new Vuex.Store({
     },
     async del_user(store, cc) {
       console.log(cc);
-      console.log(parseInt(cc["text"]));
-      console.log(parseInt(cc));
       return await api
-        .post(apiRoot + "/userdel/"+ parseInt(cc)+"/")
+        .post(apiRoot + "/userdel/" + parseInt(cc) + "/")
         .then(response => store.commit("DEL_USER", response))
         .catch(error => store.commit("API_FAIL", error));
     },
@@ -95,9 +93,22 @@ const store = new Vuex.Store({
         .then(response => store.commit("GET_ALLCONCELHO", response))
         .catch(error => store.commit("API_FAIL", error));
     },
-    async user_updateall(store, cc, nome, palavrapasse,ocupacao, n_distrito) {
+    async user_updateall(store, cc, nome, palavrapasse, ocupacao, n_distrito) {
       return await api
-        .get(apiRoot + "/userupdate/"+cc+"/"+nome+"/"+palavrapasse+"/"+ocupacao+"/"+n_distrito+"/")
+        .get(
+          apiRoot +
+            "/userupdate/" +
+            cc +
+            "/" +
+            nome +
+            "/" +
+            palavrapasse +
+            "/" +
+            ocupacao +
+            "/" +
+            n_distrito +
+            "/"
+        )
         .then(response => store.commit("UPDATE_USERUPDATE", response))
         .catch(error => store.commit("API_FAIL", error));
     },
@@ -107,25 +118,35 @@ const store = new Vuex.Store({
         .then(response => store.commit("POST_ACIDENTE", response))
         .catch(error => store.commit("API_FAIL", error));
     },
-    async update_acidente(store, id, concelho, mortos, feridosg, via, km, natureza) {
-      console.log(concelho);
-      console.log(mortos);
-      console.log(feridosg);
-      console.log(via);
-      console.log(km);
-      console.log(natureza);
+    async update_acidente(store, dict) {
       return await api
-        .get(apiRoot + "/acidenteupdate/"+id+"/"+concelho+"/"+mortos+"/"+feridosg+"/"+via+"/"+km+"/"+natureza+"/")
+        .get(
+          apiRoot +
+            "/acidenteupdate/" +
+            parseInt(dict["id"]) +
+            "/" +
+            dict["concelho"] +
+            "/" +
+            parseInt(dict["mortos"]) +
+            "/" +
+            parseInt(dict["feridosg"]) +
+            "/" +
+            dict["via"] +
+            "/" +
+            dict["km"] +
+            "/" +
+            dict["natureza"] +
+            "/"
+        )
         .then(response => store.commit("UPDATE_ACIDENTE", response))
         .catch(error => store.commit("API_FAIL", error));
     },
-    async del_acidente(store, id){
+    async del_acidente(store, id) {
       return await api
-        .post(apiRoot + "/acidentedel/" + parseInt(id)+"/")
+        .post(apiRoot + "/acidentedel/" + parseInt(id) + "/")
         .then(response => store.commit("DEL_ACIDENTE", response))
         .catch(error => store.commit("API_FAIL", error));
     }
-
   }
 });
 

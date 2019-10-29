@@ -22,12 +22,14 @@
           <img v-if="routes.imageUrl" :src="routes.imageUrl" style="width: 40px; height: 40px;" />
           {{ routes.text }}
         </router-link>
-        <button
-          :id="logout"
-          class="w3-button w3-red w3-hover-opacity w3-margin-left"
-          style="font-family: sans-serif, letter-spacing: 3px"
-          @click="logout"
-        >Terminar Sessão</button>
+        <router-link v-bind:key="link.id" :to="`${link.page}`">
+          <button
+            :id="logout"
+            class="w3-button w3-red w3-hover-opacity w3-margin-left"
+            style="font-family: sans-serif, letter-spacing: 3px"
+            @click="logout"
+          >Terminar Sessão</button>
+        </router-link>
       </div>
     </nav>
   </div>
@@ -40,6 +42,11 @@ export default {
   name: "Nav2",
   data: function() {
     return {
+      link: {
+        id: 1,
+        text: "SinistralidadeANSR",
+        page: "/"
+      },
       links: [
         {
           id: 0,
@@ -65,7 +72,7 @@ export default {
     logout() {
       Cookies.set("loggedIn", 0);
       Cookies.remove("loggedName");
-      window.location.reload(true);
+      Cookies.set("stop", false);
     }
   }
 };
