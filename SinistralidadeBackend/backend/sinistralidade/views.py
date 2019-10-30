@@ -6,11 +6,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate, login
-from .models import utilizador, distrito, concelho, acidente
-from .serializers import utilizadorSerializer, distritoSerializer, concelhoSerializer, acidenteSerializer
+from .models import utilizador, distrito, concelho, acidente, historico
+from .serializers import utilizadorSerializer, distritoSerializer, concelhoSerializer, acidenteSerializer, historicoSerializer
 from django.db import connection
 from django.db import transaction, DatabaseError
 from django.http import JsonResponse
+import datetime
+from django.shortcuts import get_object_or_404
+
 
 # --------------------- DISTRITO FUNCTIONS------------------------------------------
 
@@ -213,8 +216,9 @@ class AcidenteDeleteView(APIView):
 
 class AcidenteUpdateHospitalView (APIView):
     @transaction.atomic
-    def get(self, request, id, mortos, feridosg):
+    def get(self, request, id, mortos, feridosg, cc):
         obj = acidente.objects.select_for_update().filter(id=id)
+        lastID = historico.objects.latest('id')
         try:
             with transaction.atomic():
                 obj.update(mortos=mortos, feridosg=feridosg)
@@ -236,4 +240,29 @@ class AcidenteGetLastID (APIView):
         lastID = acidente.objects.latest('id')
         acid = acidente.objects.filter(id=lastID.id)
         serializer = acidenteSerializer(acid, many=True)
+        return Response(serializer.data)
+
+
+class HistoricoPostView (APIView):
+    @transaction.atomic
+    def post(self, request, format=None):
+        serializer = historicoSerializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                with transaction.atomic():
+                    serializer.save()
+            except DatabaseError:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class HistoricoGetLastId (APIView):
+    def get(self, request):
+        try:
+            lastID = historico.objects.latest('id')
+        except historico.DoesNotExist:
+            raise Http404("No historico matches the given query.")
+        hist = historico.objects.filter(id=lastID.id)
+        serializer = historicoSerializer(hist, many=True)
         return Response(serializer.data)

@@ -3,7 +3,7 @@ import json
 from django.utils import timezone
 from rest_framework import serializers
 
-from .models import utilizador, distrito, concelho, acidente
+from .models import utilizador, distrito, concelho, acidente, historico
 
 
 class distritoSerializer(serializers.Serializer):
@@ -126,7 +126,7 @@ class acidenteSerializer(serializers.Serializer):
         return aciden
 
 
-class historico (serializers.Serializer):
+class historicoSerializer (serializers.Serializer):
     id = serializers.IntegerField()
     datahora = serializers.DateTimeField()
     cc_user = serializers.IntegerField()

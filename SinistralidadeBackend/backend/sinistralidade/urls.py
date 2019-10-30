@@ -27,6 +27,8 @@ from .views import (
     AcidenteGetIdView,
     AcidenteUpdateView,
     AcidenteGetLastID,
+    HistoricoPostView,
+    HistoricoGetLastId,
 )
 
 urlpatterns = [
@@ -34,7 +36,7 @@ urlpatterns = [
     path('registerdist/', DistritoPostView.as_view(), name='post_distrito'),
     path('registerconc/', ConcelhoPostView.as_view(), name='post_concelho'),
     path('registeracidente/', AcidentePostView.as_view(), name='post_acidente'),
-    path('acidenteuphospital/<int:id>/<int:mortos>/<int:feridosg>/',
+    path('acidenteuphospital/<int:id>/<int:mortos>/<int:feridosg>/<int:cc>/',
          AcidenteUpdateHospitalView.as_view(), name='update_acidentehospital'),
     path('acidenteid/<int:id>/',
          AcidenteGetIdView.as_view(), name='get_acidenteid'),
@@ -64,5 +66,10 @@ urlpatterns = [
          AcidenteUpdateView.as_view(), name='update_acidente'),
 
     path('acidentelastid', AcidenteGetLastID.as_view(), name='acidenteget_lastid'),
+
+    path('historicopost/', HistoricoPostView.as_view(), name='post_historico'),
+
+    path('historicogetlastid/', HistoricoGetLastId.as_view(),
+         name='get_lastidhistorico')
 
 ]

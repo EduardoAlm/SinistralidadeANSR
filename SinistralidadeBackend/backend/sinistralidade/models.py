@@ -32,7 +32,7 @@ class acidente(models.Model):
 
 
 class historico (models.Model):
-    id = models.AutoField(auto_created=True, primary_key=True)
+    id = models.AutoField(primary_key=True)
     datahora = models.DateTimeField(auto_now_add=True)
     cc_user = models.IntegerField()
     id_acidente = models.IntegerField()
