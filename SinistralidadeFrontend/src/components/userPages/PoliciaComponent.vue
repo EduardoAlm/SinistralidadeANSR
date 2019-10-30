@@ -180,6 +180,9 @@ export default {
     },
     acidentes() {
       return this.$store.state.acidentes;
+    },
+    lastAcId() {
+      return this.$store.state.lastAcId;
     }
   },
   methods: {
@@ -252,7 +255,10 @@ export default {
       //funcao para devolver o id do ultimo acidente registrado
       var dict = {};
       var date = new Date();
-      dict["id"] = this.id;
+      await this.$store.dispatch("acidenteget_lastid");
+      var last = this.lastAcId;
+      console.log(last);
+      dict["id"] = this.last["id"] + 1;
       dict["concelho"] = this.concelho;
       dict["datahora"] = date.toJSON();
       dict["mortos"] = this.mortos;

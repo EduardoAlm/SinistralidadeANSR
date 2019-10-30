@@ -12,7 +12,8 @@ const store = new Vuex.Store({
     acidente: [],
     user: [],
     allusers: [],
-    allconcelhos: []
+    allconcelhos: [],
+    lastAcID: []
   },
   mutations: {
     GET_USER: function(state, response) {
@@ -52,6 +53,10 @@ const store = new Vuex.Store({
     },
     DEL_ACIDENTE: function(state, response) {
       console.log(response.body);
+    },
+    GET_LASTIDACIDENTES: function(state, response) {
+      console.log(response.body);
+      state.lastAcID = response.body;
     },
     // Note that we added one more for logging out errors.
     API_FAIL: function(state, error) {
@@ -163,6 +168,12 @@ const store = new Vuex.Store({
       return await api
         .post(apiRoot + "/acidentedel/" + parseInt(id) + "/")
         .then(response => store.commit("DEL_ACIDENTE", response))
+        .catch(error => store.commit("API_FAIL", error));
+    },
+    async acidenteget_lastid(store) {
+      return await api
+        .get(apiRoot + "/acidentelastid/")
+        .then(response => store.commit("GET_LASTIDACIDENTES", response))
         .catch(error => store.commit("API_FAIL", error));
     }
   }
