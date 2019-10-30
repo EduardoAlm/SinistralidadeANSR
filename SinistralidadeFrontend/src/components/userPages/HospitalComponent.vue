@@ -12,7 +12,7 @@
         <div class="dropdown-content" style="max-height:350px;
    overflow:auto;">
           <a
-            v-for="c in this.concelhos"
+            v-for="c in this.concelhosdist"
             v-bind:key="c.id"
             @click="getAc(c.nome); myInput=c.nome"
           >{{c.nome}}</a>
@@ -83,7 +83,11 @@
             </button>
             <div class="dropdown-content" style="max-height:350px;
         overflow:auto;" disabled>
-              <a v-for="c in this.concelhos" v-bind:key="c.id" @click="concelho=c.nome">{{c.nome}}</a>
+              <a
+                v-for="c in this.concelhosdist"
+                v-bind:key="c.id"
+                @click="concelho=c.nome"
+              >{{c.nome}}</a>
             </div>
           </div>
           <hr style="border: 0.7px solid gray;" />
@@ -167,14 +171,17 @@ export default {
       feridosg: 0,
       via: "",
       km: "",
-      natureza: ""
+      natureza: "",
+      userInfo: []
     };
   },
   computed: {
     concelhos() {
       return this.$store.state.allconcelhos;
     },
-
+    concelhosdist() {
+      return this.$store.state.concelhosdist;
+    },
     acidentes() {
       return this.$store.state.acidentes;
     }
@@ -220,8 +227,8 @@ export default {
       this.getAcidente(concelho);
     },
     getConcelhos: async function() {
-      await this.$store.dispatch("get_concelhoall");
-      console.log(this.concelhos);
+      await this.$store.dispatch("get_concelhodist", this.userInfo);
+      console.log(this.concelhosdist);
     },
     checkNull2() {
       console.log(this.concelho);
@@ -267,6 +274,9 @@ export default {
     }
   },
   mounted() {
+    var userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    this.userInfo = userInfo[0].n_distrito;
+    console.log(this.userInfo);
     this.getConcelhos();
   }
 };

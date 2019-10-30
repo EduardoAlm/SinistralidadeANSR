@@ -1,5 +1,5 @@
 <template>
   <div>
-    <h2>Sum amazing text will appear here!</h2>
+    <h2>Historico</h2>
   </div>
 </template>

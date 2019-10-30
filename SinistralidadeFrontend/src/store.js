@@ -13,7 +13,8 @@ const store = new Vuex.Store({
     user: [],
     allusers: [],
     allconcelhos: [],
-    lastAcID: []
+    lastAcID: [],
+    concelhosdist: []
   },
   mutations: {
     GET_USER: function(state, response) {
@@ -55,8 +56,12 @@ const store = new Vuex.Store({
       console.log(response.body);
     },
     GET_LASTIDACIDENTES: function(state, response) {
-      console.log(response.body);
       state.lastAcID = response.body;
+      console.log(state.lastAcID);
+    },
+    GET_CONCELHODIST: function(state, response) {
+      state.concelhosdist = response.body;
+      console.log(state.concelhosdist);
     },
     // Note that we added one more for logging out errors.
     API_FAIL: function(state, error) {
@@ -174,6 +179,12 @@ const store = new Vuex.Store({
       return await api
         .get(apiRoot + "/acidentelastid/")
         .then(response => store.commit("GET_LASTIDACIDENTES", response))
+        .catch(error => store.commit("API_FAIL", error));
+    },
+    async get_concelhodist(store, distrito) {
+      return await api
+        .get(apiRoot + "/concelhodist/" + distrito + "/")
+        .then(response => store.commit("GET_CONCELHODIST", response))
         .catch(error => store.commit("API_FAIL", error));
     }
   }

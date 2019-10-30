@@ -12,7 +12,7 @@
         <div class="dropdown-content" style="max-height:350px;
    overflow:auto;">
           <a
-            v-for="c in this.concelhos"
+            v-for="c in this.concelhosdist"
             v-bind:key="c.id"
             @click="getAc(c.nome); myInput=c.nome"
           >{{c.nome}}</a>
@@ -85,7 +85,11 @@
             </button>
             <div class="dropdown-content" style="max-height:350px;
         overflow:auto;">
-              <a v-for="c in this.concelhos" v-bind:key="c.id" @click="concelho=c.nome">{{c.nome}}</a>
+              <a
+                v-for="c in this.concelhosdist"
+                v-bind:key="c.id"
+                @click="concelho=c.nome"
+              >{{c.nome}}</a>
             </div>
           </div>
 
@@ -171,18 +175,19 @@ export default {
       feridosg: 0,
       via: "",
       km: "",
-      natureza: ""
+      natureza: "",
+      userInfo: []
     };
   },
   computed: {
     concelhos() {
-      return this.$store.state.allconcelhos;
+      return this.$store.state.concelhos;
     },
     acidentes() {
       return this.$store.state.acidentes;
     },
-    lastAcId() {
-      return this.$store.state.lastAcId;
+    concelhosdist() {
+      return this.$store.state.concelhosdist;
     }
   },
   methods: {
@@ -225,8 +230,8 @@ export default {
       this.getAcidente(concelho);
     },
     getConcelhos: async function() {
-      await this.$store.dispatch("get_concelhoall");
-      console.log(this.concelhos);
+      await this.$store.dispatch("get_concelhodist", this.userInfo);
+      console.log(this.concelhosdist);
     },
     checkNull2() {
       console.log(this.concelho);
@@ -256,9 +261,9 @@ export default {
       var dict = {};
       var date = new Date();
       await this.$store.dispatch("acidenteget_lastid");
-      var last = this.lastAcId;
-      console.log(last);
-      dict["id"] = this.last["id"] + 1;
+      var last = this.lastAcID;
+      console.log(last[0].id);
+      dict["id"] = last[0].id + 1;
       dict["concelho"] = this.concelho;
       dict["datahora"] = date.toJSON();
       dict["mortos"] = this.mortos;
@@ -269,7 +274,7 @@ export default {
       console.log(date.toJSON());
       console.log(await this.$store.dispatch("post_acidente", dict));
       this.myInput = this.concelho;
-
+      this.getAc(this.concelho);
       this.id = 0;
       this.concelho = "Selecione o seu concelho";
       this.datahora = 0;
@@ -283,6 +288,9 @@ export default {
     }
   },
   mounted() {
+    var userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    this.userInfo = userInfo[0].n_distrito;
+    console.log(this.userInfo);
     this.getConcelhos();
   }
 };

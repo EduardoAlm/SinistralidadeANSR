@@ -560,8 +560,8 @@ export default {
     acidentes() {
       return this.$store.state.acidentes;
     },
-    lastAcId() {
-      return this.$store.state.lastAcId;
+    lastAcID() {
+      return this.$store.state.lastAcID;
     }
   },
   methods: {
@@ -721,9 +721,9 @@ export default {
       var dict = {};
       var date = new Date();
       await this.$store.dispatch("acidenteget_lastid");
-      var last = this.lastAcId;
-      console.log(last);
-      dict["id"] = this.last["id"]+1;
+      var last = this.lastAcID;
+      console.log(last[0].id);
+      dict["id"] = last[0].id + 1;
       dict["concelho"] = this.concelho;
       dict["datahora"] = date.toJSON();
       dict["mortos"] = this.mortos;
@@ -734,7 +734,7 @@ export default {
       console.log(date.toJSON());
       console.log(await this.$store.dispatch("post_acidente", dict));
       this.myInput = this.concelho;
-
+      this.getAc(this.concelho);
       this.id = 0;
       this.concelho = "Selecione o seu concelho";
       this.datahora = 0;
@@ -772,6 +772,8 @@ export default {
     deleteAcidente: async function() {
       console.log(this.id);
       console.log(await this.$store.dispatch("del_acidente", this.id));
+      this.myInput = this.concelho;
+      this.getAc(this.concelho);
     }
   },
   mounted() {

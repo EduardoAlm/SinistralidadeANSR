@@ -65,7 +65,7 @@ urlpatterns = [
     path('acidenteupdate/<int:id>/<str:concelho>/<int:mortos>/<int:feridosg>/<str:via>/<str:km>/<str:natureza>/',
          AcidenteUpdateView.as_view(), name='update_acidente'),
 
-    path('acidentelastid', AcidenteGetLastID.as_view(), name='acidenteget_lastid'),
+    path('acidentelastid/', AcidenteGetLastID.as_view(), name='acidenteget_lastid'),
 
     path('historicopost/', HistoricoPostView.as_view(), name='post_historico'),
 
