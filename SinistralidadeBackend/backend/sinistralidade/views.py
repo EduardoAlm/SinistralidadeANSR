@@ -12,7 +12,6 @@ from django.db import connection
 from django.db import transaction, DatabaseError
 from django.http import JsonResponse
 import datetime
-from django.shortcuts import get_object_or_404
 
 
 # --------------------- DISTRITO FUNCTIONS------------------------------------------
@@ -33,7 +32,7 @@ class DistritoPostView(APIView):
         serializer = distritoSerializer(data=request.data)
         if serializer.is_valid():
             try:
-                with transaction.atomic():
+                with transaction.atomic(using=None, savepoint=True):
                     serializer.save()
             except DatabaseError:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -46,7 +45,7 @@ class DistritoDeleteView(APIView):
     def post(self, request, nome=None):
         dist = distrito.objects.select_for_update().filter(nome=nome)
         try:
-            with transaction.atomic():
+            with transaction.atomic(using=None, savepoint=True):
                 dist.delete()
         except DatabaseError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -86,7 +85,7 @@ class ConcelhoPostView(APIView):
         serializer = concelhoSerializer(data=request.data)
         if serializer.is_valid():
             try:
-                with transaction.atomic():
+                with transaction.atomic(using=None, savepoint=True):
                     serializer.save()
             except DatabaseError:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -99,7 +98,7 @@ class ConcelhoDeleteView(APIView):
     def post(self, request, nome=None):
         conc = concelho.objects.select_for_update().filter(nome=nome)
         try:
-            with transaction.atomic():
+            with transaction.atomic(using=None, savepoint=True):
                 conc.delete()
         except DatabaseError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -135,7 +134,7 @@ class UserPostView(APIView):
         serializer = utilizadorSerializer(data=request.data)
         if serializer.is_valid():
             try:
-                with transaction.atomic():
+                with transaction.atomic(using=None, savepoint=True):
                     serializer.save()
             except DatabaseError:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -148,7 +147,7 @@ class UserDeleteView(APIView):
     def post(self, request, cc=None):
         user = utilizador.objects.select_for_update().filter(cc=cc)
         try:
-            with transaction.atomic():
+            with transaction.atomic(using=None, savepoint=True):
                 user.delete()
         except DatabaseError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -160,14 +159,14 @@ class UserUpdateView(APIView):
     def get(self, request, cc, nome, palavrapasse, ocupacao, n_distrito):
         user = utilizador.objects.select_for_update().filter(cc=cc)
         try:
-            with transaction.atomic():
+            with transaction.atomic(using=None, savepoint=True):
                 user.update(nome=nome, palavrapasse=palavrapasse,
                             ocupacao=ocupacao, n_distrito=n_distrito)
         except DatabaseError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_200_OK)
 
-        # ------------------------------------ACIDENTE FUNCTIONS------------------------------
+# ------------------------------------ACIDENTE FUNCTIONS------------------------------
 
 
 class AcidenteGetView(APIView):
@@ -194,7 +193,7 @@ class AcidentePostView(APIView):
         serializer = acidenteSerializer(data=request.data)
         if serializer.is_valid():
             try:
-                with transaction.atomic():
+                with transaction.atomic(using=None, savepoint=True):
                     serializer.save()
             except DatabaseError:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -207,7 +206,7 @@ class AcidenteDeleteView(APIView):
     def post(self, request, id, format=None):
         acid = acidente.objects.select_for_update().get(id=id)
         try:
-            with transaction.atomic():
+            with transaction.atomic(using=None, savepoint=True):
                 acid.delete()
         except DatabaseError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -220,8 +219,9 @@ class AcidenteUpdateHospitalView (APIView):
         obj = acidente.objects.select_for_update().filter(id=id)
         lastID = historico.objects.latest('id')
         try:
-            with transaction.atomic():
+            with transaction.atomic(using=None, savepoint=True):
                 obj.update(mortos=mortos, feridosg=feridosg)
+                # transaction.on_commit(chamar historico)
         except DatabaseError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_200_OK)
@@ -243,13 +243,23 @@ class AcidenteGetLastID (APIView):
         return Response(serializer.data)
 
 
+# --------------------------- Historico ------------------------------------------
+
+class HistoricoGetView(APIView):
+
+    def get(self, request, format=None, id_acidente=None):
+        hist = historico.objects.filter(id_acidente=id_acidente)
+        serializer = historicoSerializer(hist, many=True)
+        return Response(serializer.data)
+
+
 class HistoricoPostView (APIView):
     @transaction.atomic
     def post(self, request, format=None):
         serializer = historicoSerializer(data=request.data)
         if serializer.is_valid():
             try:
-                with transaction.atomic():
+                with transaction.atomic(using=None, savepoint=True):
                     serializer.save()
             except DatabaseError:
                 return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -29,6 +29,7 @@ from .views import (
     AcidenteGetLastID,
     HistoricoPostView,
     HistoricoGetLastId,
+    HistoricoGetView,
 )
 
 urlpatterns = [
@@ -70,6 +71,9 @@ urlpatterns = [
     path('historicopost/', HistoricoPostView.as_view(), name='post_historico'),
 
     path('historicogetlastid/', HistoricoGetLastId.as_view(),
-         name='get_lastidhistorico')
+         name='get_lastidhistorico'),
+
+    path('historicoget/<int:id_acidente>',
+         HistoricoGetView.as_view(), name='get_historico')
 
 ]
