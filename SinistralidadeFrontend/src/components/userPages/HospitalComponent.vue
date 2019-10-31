@@ -30,12 +30,13 @@
           <th>Via</th>
           <th>Km</th>
           <th>Natureza</th>
+          <th>Historico</th>
         </tr>
         <tr
           v-for="ac in acidentes"
           v-bind:key="ac.id"
           class="w3-hover-light-gray"
-          @click="selectAcidente(ac.id, ac.concelho, ac.ocupacao, ac.datahora, ac.mortos, ac.feridosg, ac.via,ac.km, ac.natureza)"
+          @click="selectAcidente(ac.id, ac.concelho, ac.ocupacao, ac.datahora, ac.mortos, ac.feridosg, ac.via,ac.km, ac.natureza);getHistorico(ac.id)"
         >
           <td>{{ ac.id }}</td>
           <td>{{ ac.concelho }}</td>
@@ -45,12 +46,49 @@
           <td>{{ ac.via }}</td>
           <td>{{ ac.km }}</td>
           <td>{{ ac.natureza }}</td>
+          <td>
+            <button class="w3-button w3-green w3-round" @click="modalHistorico()">Ver histórico</button>
+          </td>
         </tr>
       </table>
       <p>&nbsp;</p>
 
-      <button class="w3-button w3-green w3-round" @click="modalUpdateAcidente()">Atualizar</button>
+      <button class="w3-button w3-green w3-round" @click="modalUpdateAcidente();">Atualizar</button>
     </div>
+    <modal name="historicoModal" height="auto" :scrollable="true">
+      <div class="w3-container w3-row">
+        <div class="w3-cell-row">
+          <div class="w3-container w3-cell-top w3-display-topleft">
+            <h3 class="w3-text-blue" style="margin-top:10px">Histórico do Acidente</h3>
+          </div>
+          <div class="w3-container w3-cell-top w3-display-topright">
+            <button
+              class="w3-button w3-white w3-border-white w3-shadow-white w3-hover-white"
+              style="width:40px;height:30px"
+              @click="$modal.hide('historicoModal')"
+            >
+              <img src="../../assets/img/cross.png" style="width:20px;heigth:30px" />
+            </button>
+          </div>
+        </div>
+        <p></p>
+      </div>
+      <p>&nbsp;</p>
+      <table class="w3-table w3-bordered w3-centered w3-striped">
+        <tr>
+          <th>Id do Histórico</th>
+          <th>Data e Hora de Alteração</th>
+          <th>Alterado Por</th>
+          <th>Id do Acidente</th>
+        </tr>
+        <tr v-for="ac in historicobyid" v-bind:key="ac.id" class="w3-hover-light-gray">
+          <td>{{ ac.id }}</td>
+          <td>{{ ac.datahora }}</td>
+          <td>{{ ac.cc_user }}</td>
+          <td>{{ ac.id_acidente }}</td>
+        </tr>
+      </table>
+    </modal>
     <modal name="atualizarAcidenteModal" height="auto" :scrollable="true">
       <div class="w3-container w3-row">
         <div class="w3-cell-row">
@@ -172,7 +210,8 @@ export default {
       via: "",
       km: "",
       natureza: "",
-      userInfo: []
+      userInfo: [],
+      userCC: []
     };
   },
   computed: {
@@ -184,6 +223,15 @@ export default {
     },
     acidentes() {
       return this.$store.state.acidentes;
+    },
+    historicobyid() {
+      return this.$store.state.historicobyid;
+    },
+    historicolastidf() {
+      return this.$store.state.historicolastid;
+    },
+    historicof() {
+      return this.$store.state.historico;
     }
   },
   methods: {
@@ -215,7 +263,9 @@ export default {
       this.km = km;
       this.natureza = natureza;
     },
-
+    modalHistorico: function() {
+      this.$modal.show("historicoModal");
+    },
     modalUpdateAcidente: function() {
       this.$modal.show("atualizarAcidenteModal");
     },
@@ -229,6 +279,18 @@ export default {
     getConcelhos: async function() {
       await this.$store.dispatch("get_concelhodist", this.userInfo);
       console.log(this.concelhosdist);
+    },
+    getHistorico: async function() {
+      await this.$store.dispatch("get_historico", this.id);
+      console.log(this.historicobyid);
+    },
+    getHistoricoLastId: async function() {
+      await this.$store.dispatch("get_lastidhistorico");
+      console.log(this.historicolastid);
+    },
+    createHistorico: async function(dict) {
+      await this.$store.dispatch("post_historico", dict);
+      console.log(this.historico);
     },
     checkNull2() {
       console.log(this.concelho);
@@ -255,10 +317,28 @@ export default {
     updateAcidente: async function() {
       var dict = {};
       dict["id"] = this.id;
+      dict["cc"] = this.userCC;
       dict["mortos"] = this.mortos;
       dict["feridosg"] = this.feridosg;
+      var dict1 = {};
 
       console.log(await this.$store.dispatch("update_acidentehospital", dict));
+
+      this.getHistoricoLastId();
+      console.log(this.historicolastid);
+      if (this.historicolastid.status == 404) {
+        dict1["id"] = 1;
+        dict1["datahora"] = this.datahora;
+        dict1["cc_user"] = this.userCC;
+        dict1["id_acidente"] = this.id;
+        console.log(dict1);
+      } else {
+        dict1["id"] = this.historicolastid[0].id + 1;
+        dict1["datahora"] = this.datahora;
+        dict1["cc_user"] = this.userCC;
+        dict1["id_acidente"] = this.id;
+      }
+      this.createHistorico(dict1);
       this.myInput = this.concelho;
       this.getAc(this.concelho);
       this.id = 0;
@@ -276,6 +356,7 @@ export default {
   mounted() {
     var userInfo = JSON.parse(localStorage.getItem("userInfo"));
     this.userInfo = userInfo[0].n_distrito;
+    this.userCC = userInfo[0].cc;
     console.log(this.userInfo);
     this.getConcelhos();
   }

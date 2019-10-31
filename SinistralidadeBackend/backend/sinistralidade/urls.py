@@ -73,7 +73,7 @@ urlpatterns = [
     path('historicogetlastid/', HistoricoGetLastId.as_view(),
          name='get_lastidhistorico'),
 
-    path('historicoget/<int:id_acidente>',
+    path('historicoget/<int:id_acidente>/',
          HistoricoGetView.as_view(), name='get_historico')
 
 ]

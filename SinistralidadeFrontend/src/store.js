@@ -15,7 +15,7 @@ const store = new Vuex.Store({
     allconcelhos: [],
     lastAcID: [],
     concelhosdist: [],
-    historicos: [],
+    historicobyid: [],
     historicolastid: [],
     historico: []
   },
@@ -67,8 +67,8 @@ const store = new Vuex.Store({
       console.log(state.concelhosdist);
     },
     GET_HISTORICO: function(state, response) {
-      state.historicos = response.body;
-      console.log(state.historicos);
+      state.historicobyid = response.body;
+      console.log(state.historicobyid);
     },
     GET_HISTORICOLASTID: function(state, response) {
       state.historicolastid = response.body;
@@ -80,6 +80,9 @@ const store = new Vuex.Store({
     // Note that we added one more for logging out errors.
     API_FAIL: function(state, error) {
       console.error(error);
+      if (error.url == "http://localhost:8000/historicogetlastid/") {
+        state.historicolastid = error;
+      }
     }
   },
   actions: {
@@ -178,6 +181,8 @@ const store = new Vuex.Store({
             parseInt(dict["mortos"]) +
             "/" +
             parseInt(dict["feridosg"]) +
+            "/" +
+            parseInt(dict["cc"]) +
             "/"
         )
         .then(response => store.commit("UPDATE_ACIDENTEHOSPITAL", response))
@@ -203,7 +208,7 @@ const store = new Vuex.Store({
     },
     async get_historico(store, id) {
       return await api
-        .get(apiRoot + "/historicoget/" + id + "/")
+        .get(apiRoot + "/historicoget/" + parseInt(id) + "/")
         .then(response => store.commit("GET_HISTORICO", response))
         .catch(error => store.commit("API_FAIL", error));
     },

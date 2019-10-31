@@ -1,5 +1,5 @@
 <template>
   <div>
-    <h2>Historico</h2>
+    <h2>estaticas de acidentes genericas</h2>
   </div>
 </template>
