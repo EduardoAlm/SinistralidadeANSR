@@ -14,7 +14,10 @@ const store = new Vuex.Store({
     allusers: [],
     allconcelhos: [],
     lastAcID: [],
-    concelhosdist: []
+    concelhosdist: [],
+    historicos: [],
+    historicolastid: [],
+    historico: []
   },
   mutations: {
     GET_USER: function(state, response) {
@@ -62,6 +65,17 @@ const store = new Vuex.Store({
     GET_CONCELHODIST: function(state, response) {
       state.concelhosdist = response.body;
       console.log(state.concelhosdist);
+    },
+    GET_HISTORICO: function(state, response) {
+      state.historicos = response.body;
+      console.log(state.historicos);
+    },
+    GET_HISTORICOLASTID: function(state, response) {
+      state.historicolastid = response.body;
+      console.log(state.historicolastid);
+    },
+    POST_HISTORICO: function(state, response) {
+      state.historico.push(response.body);
     },
     // Note that we added one more for logging out errors.
     API_FAIL: function(state, error) {
@@ -185,6 +199,25 @@ const store = new Vuex.Store({
       return await api
         .get(apiRoot + "/concelhodist/" + distrito + "/")
         .then(response => store.commit("GET_CONCELHODIST", response))
+        .catch(error => store.commit("API_FAIL", error));
+    },
+    async get_historico(store, id) {
+      return await api
+        .get(apiRoot + "/historicoget/" + id + "/")
+        .then(response => store.commit("GET_HISTORICO", response))
+        .catch(error => store.commit("API_FAIL", error));
+    },
+    async get_lastidhistorico(store) {
+      return await api
+        .get(apiRoot + "/historicogetlastid/")
+        .then(response => store.commit("GET_HISTORICOLASTID", response))
+        .catch(error => store.commit("API_FAIL", error));
+    },
+
+    async post_historico(store, his) {
+      return await api
+        .post(apiRoot + "/historicopost/", his)
+        .then(response => store.commit("POST_HISTORICO", response))
         .catch(error => store.commit("API_FAIL", error));
     }
   }
