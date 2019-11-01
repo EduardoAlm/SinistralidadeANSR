@@ -113,20 +113,15 @@
           <h5 class>Concelho:</h5>
           <div class="dropdown">
             <button
-              class="dropbtn w3-button w3-padding-small w3-light-gray w3-border-5 w3-hover-border-light-green w3-round w3-hover-opacity w3-center"
+              class="w3-opacity dropbtn w3-button w3-padding-small w3-light-gray w3-border-5 w3-hover-border-light-green w3-round w3-hover-opacity w3-center"
               style="border:2px solid grey"
+              disabled
             >
               {{this.concelho}}
               <img :src="this.imageUrl" style="width: 16px; heigth: 15px" />
             </button>
             <div class="dropdown-content" style="max-height:350px;
-        overflow:auto;" disabled>
-              <a
-                v-for="c in this.concelhosdist"
-                v-bind:key="c.id"
-                @click="concelho=c.nome"
-              >{{c.nome}}</a>
-            </div>
+        overflow:auto;"></div>
           </div>
           <hr style="border: 0.7px solid gray;" />
           <h5>Data e Hora:</h5>
@@ -161,7 +156,7 @@
           <input
             :id="via"
             v-model="via"
-            class="w3-input w3-border-5 w3-hover-border-green w3-round-large w3-light-grey"
+            class="w3-opacity w3-input w3-border-5 w3-hover-border-green w3-round-large w3-light-grey"
             style="border:2px solid grey"
             type="text"
             disabled
@@ -171,7 +166,7 @@
           <input
             :id="km"
             v-model="km"
-            class="w3-input w3-border-5 w3-hover-border-green w3-round-large w3-light-grey"
+            class="w3-opacity w3-input w3-border-5 w3-hover-border-green w3-round-large w3-light-grey"
             style="border:2px solid grey"
             type="text"
             disabled
@@ -181,7 +176,7 @@
           <input
             :id="natureza"
             v-model="natureza"
-            class="w3-input w3-border-5 w3-hover-border-green w3-round-large w3-light-grey"
+            class="w3-opacity w3-input w3-border-5 w3-hover-border-green w3-round-large w3-light-grey"
             style="border:2px solid grey"
             type="text"
             disabled

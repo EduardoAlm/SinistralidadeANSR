@@ -132,7 +132,7 @@ const store = new Vuex.Store({
             "/" +
             dict["nome"] +
             "/" +
-            dict["palavrapassedict"] +
+            dict["palavrapasse"] +
             "/" +
             dict["ocupacao"] +
             "/" +

@@ -765,7 +765,7 @@ export default {
       dict["palavrapasse"] = this.palavraPasse;
       dict["ocupacao"] = this.Ocupacao;
       dict["n_distrito"] = this.Distrito;
-
+      console.log(this.palavraPasse);
       console.log(await this.$store.dispatch("user_updateall", dict));
       this.palavraPasse = "";
       this.userName = "";

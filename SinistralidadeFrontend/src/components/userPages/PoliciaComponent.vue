@@ -214,7 +214,8 @@ export default {
       via: "",
       km: "",
       natureza: "",
-      userInfo: []
+      userInfo: [],
+      registFlag: false
     };
   },
   computed: {
@@ -226,6 +227,9 @@ export default {
     },
     concelhosdist() {
       return this.$store.state.concelhosdist;
+    },
+    lastAcID() {
+      return this.$store.state.lastAcID;
     },
     historicobyid() {
       return this.$store.state.historicobyid;
