@@ -44,9 +44,9 @@ class DistritoPostView(APIView):
 class DistritoDeleteView(APIView):
     @transaction.atomic
     def post(self, request, nome=None):
-        dist = distrito.objects.select_for_update().filter(nome=nome)
         try:
             with transaction.atomic(using=None, savepoint=True):
+                dist = distrito.objects.select_for_update().filter(nome=nome)
                 dist.delete()
         except DatabaseError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -97,9 +97,9 @@ class ConcelhoPostView(APIView):
 class ConcelhoDeleteView(APIView):
     @transaction.atomic
     def post(self, request, nome=None):
-        conc = concelho.objects.select_for_update().filter(nome=nome)
         try:
             with transaction.atomic(using=None, savepoint=True):
+                conc = concelho.objects.select_for_update().filter(nome=nome)
                 conc.delete()
         except DatabaseError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -146,9 +146,9 @@ class UserPostView(APIView):
 class UserDeleteView(APIView):
     @transaction.atomic
     def post(self, request, cc=None):
-        user = utilizador.objects.select_for_update().filter(cc=cc)
         try:
             with transaction.atomic(using=None, savepoint=True):
+                user = utilizador.objects.select_for_update().filter(cc=cc)
                 user.delete()
         except DatabaseError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -158,9 +158,9 @@ class UserDeleteView(APIView):
 class UserUpdateView(APIView):
     @transaction.atomic
     def get(self, request, cc, nome, palavrapasse, ocupacao, n_distrito):
-        user = utilizador.objects.select_for_update().filter(cc=cc)
         try:
             with transaction.atomic(using=None, savepoint=True):
+                user = utilizador.objects.select_for_update().filter(cc=cc)
                 user.update(nome=nome, palavrapasse=palavrapasse,
                             ocupacao=ocupacao, n_distrito=n_distrito)
         except DatabaseError:
@@ -205,9 +205,9 @@ class AcidentePostView(APIView):
 class AcidenteDeleteView(APIView):
     @transaction.atomic
     def post(self, request, id, format=None):
-        acid = acidente.objects.select_for_update().get(id=id)
         try:
             with transaction.atomic(using=None, savepoint=True):
+                acid = acidente.objects.select_for_update().get(id=id)
                 acid.delete()
         except DatabaseError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -217,10 +217,10 @@ class AcidenteDeleteView(APIView):
 class AcidenteUpdateHospitalView (APIView):
     @transaction.atomic
     def get(self, request, id, mortos, feridosg, cc):
-        obj = acidente.objects.select_for_update().filter(id=id)
-        lastID = historico.objects.latest('id')
         try:
             with transaction.atomic(using=None, savepoint=True):
+                obj = acidente.objects.select_for_update().filter(id=id)
+                lastID = historico.objects.latest('id')
                 obj.update(mortos=mortos, feridosg=feridosg)
         except DatabaseError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -230,10 +230,10 @@ class AcidenteUpdateHospitalView (APIView):
 class AcidenteUpdateView(APIView):
     @transaction.atomic
     def get(self, request, id, concelho, mortos, feridosg, via, km, natureza):
-        obj = acidente.objects.select_for_update().filter(id=id)
-
         try:
             with transaction.atomic(using=None, savepoint=True):
+                obj = acidente.objects.select_for_update().filter(id=id)
+                # time.sleep(30)
                 obj.update(concelho=concelho, mortos=mortos,
                            feridosg=feridosg, via=via, km=km, natureza=natureza)
         except DatabaseError:
