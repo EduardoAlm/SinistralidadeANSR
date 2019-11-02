@@ -830,7 +830,7 @@ export default {
       dict["feridosg"] = this.feridosg;
       var dict1 = {};
 
-      console.log(await this.$store.dispatch("update_acidentehospital", dict));
+      console.log(await this.$store.dispatch("update_acidente", dict));
 
       this.getHistoricoLastId();
       console.log(this.historicolastid);
