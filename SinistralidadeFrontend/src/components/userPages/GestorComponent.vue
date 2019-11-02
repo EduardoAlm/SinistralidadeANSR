@@ -825,9 +825,13 @@ export default {
     updateAcidente: async function() {
       var dict = {};
       dict["id"] = this.id;
-      dict["cc"] = this.userCC;
+      dict["concelho"] = this.concelho;
+      dict["datahora"] = this.datahora;
       dict["mortos"] = this.mortos;
       dict["feridosg"] = this.feridosg;
+      dict["via"] = this.via;
+      dict["km"] = this.km;
+      dict["natureza"] = this.natureza;
       var dict1 = {};
 
       console.log(await this.$store.dispatch("update_acidente", dict));
