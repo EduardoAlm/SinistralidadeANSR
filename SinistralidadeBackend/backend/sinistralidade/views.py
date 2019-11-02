@@ -12,6 +12,7 @@ from django.db import connection
 from django.db import transaction, DatabaseError
 from django.http import JsonResponse
 import datetime
+import time
 
 
 # --------------------- DISTRITO FUNCTIONS------------------------------------------
@@ -221,17 +222,22 @@ class AcidenteUpdateHospitalView (APIView):
         try:
             with transaction.atomic(using=None, savepoint=True):
                 obj.update(mortos=mortos, feridosg=feridosg)
-                # transaction.on_commit(chamar historico)
         except DatabaseError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_200_OK)
 
 
 class AcidenteUpdateView(APIView):
+    @transaction.atomic
     def get(self, request, id, concelho, mortos, feridosg, via, km, natureza):
         obj = acidente.objects.select_for_update().filter(id=id)
-        obj.update(concelho=concelho, mortos=mortos,
-                   feridosg=feridosg, via=via, km=km, natureza=natureza)
+
+        try:
+            with transaction.atomic(using=None, savepoint=True):
+                obj.update(concelho=concelho, mortos=mortos,
+                           feridosg=feridosg, via=via, km=km, natureza=natureza)
+        except DatabaseError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_200_OK)
 
 

@@ -96,7 +96,7 @@ DATABASES = {
 
     'OPTIONS': {
         'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,
-        'timeout': 20,
+        # 'timeout': 20,
     },
 }
 
