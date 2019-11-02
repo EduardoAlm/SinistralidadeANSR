@@ -837,8 +837,8 @@ export default {
       console.log(await this.$store.dispatch("update_acidente", dict));
 
       this.getHistoricoLastId();
-      console.log(this.historicolastid);
-      if (this.historicolastid.status == 404) {
+      console.log(this.historicolastid[0]);
+      if (this.historicolastid[0].status == 404) {
         dict1["id"] = 1;
         dict1["datahora"] = this.datahora;
         dict1["cc_user"] = this.userCC;
