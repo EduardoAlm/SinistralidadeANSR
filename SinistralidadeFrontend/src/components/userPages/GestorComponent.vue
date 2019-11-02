@@ -47,7 +47,16 @@
           <td>{{ ac.km }}</td>
           <td>{{ ac.natureza }}</td>
           <td>
-            <button class="w3-button w3-green w3-round" @click="modalHistorico()">Ver histórico</button>
+            <button class="w3-button w3-orange w3-round" @click="modalHistorico()">Ver histórico</button>
+          </td>
+          <td>
+            <button class="w3-button w3-blue w3-round" @click="modalUpdateAcidente()">Atualizar</button>
+          </td>
+          <td>
+            <button
+              class="w3-button w3-red w3-round w3-margin-left"
+              @click="selectAcidente(ac.id, ac.concelho, ac.ocupacao, ac.datahora, ac.mortos, ac.feridosg, ac.via,ac.km, ac.natureza);deleteAcidente()"
+            >Apagar</button>
           </td>
         </tr>
       </table>
@@ -56,8 +65,6 @@
         class="w3-button w3-green w3-round w3-margin-right"
         @click="modalCreateAcidente()"
       >Criar</button>
-      <button class="w3-button w3-green w3-round" @click="modalUpdateAcidente()">Atualizar</button>
-      <button class="w3-button w3-green w3-round w3-margin-left" @click="deleteAcidente">Apagar</button>
     </div>
     <modal name="historicoModal" height="auto" :scrollable="true">
       <div class="w3-container w3-row">
@@ -308,12 +315,16 @@
           <td>{{ user.nome }}</td>
           <td>{{ user.ocupacao }}</td>
           <td>{{ user.n_distrito }}</td>
+          <td>
+            <button class="w3-button w3-blue w3-round" @click="modalUpdateUser()">Atualizar</button>
+          </td>
+          <td>
+            <button class="w3-button w3-red w3-round w3-margin-left" @click="deleteUser()">Apagar</button>
+          </td>
         </tr>
       </table>
       <p>&nbsp;</p>
       <button class="w3-button w3-green w3-round w3-margin-right" @click="modalCreateUser()">Criar</button>
-      <button class="w3-button w3-green w3-round" @click="modalUpdateUser()">Atualizar</button>
-      <button class="w3-button w3-green w3-round w3-margin-left" @click="deleteUser()">Apagar</button>
       <modal name="atualizarUtilizadorModal" height="auto" :scrollable="true">
         <div class="w3-container w3-row">
           <div class="w3-cell-row">
@@ -606,7 +617,7 @@ export default {
     historicobyid() {
       return this.$store.state.historicobyid;
     },
-    historicolastidf() {
+    historicolastid() {
       return this.$store.state.historicolastid;
     },
     historicof() {
@@ -779,6 +790,7 @@ export default {
     deleteUser: async function() {
       console.log(this.ccNumber);
       console.log(await this.$store.dispatch("del_user", this.ccNumber));
+      this.getUtilizadores();
     },
     createAcidente: async function() {
       //funcao para devolver o id do ultimo acidente registrado
@@ -859,7 +871,6 @@ export default {
     var userInfo = JSON.parse(localStorage.getItem("userInfo"));
     this.userInfo = userInfo[0].n_distrito;
     this.userCC = userInfo[0].cc;
-    console.log(this.userInfo);
     this.getUtilizadores();
     this.getConcelhos();
   }

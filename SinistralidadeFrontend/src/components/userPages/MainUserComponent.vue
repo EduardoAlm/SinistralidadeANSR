@@ -1,16 +1,16 @@
 <template>
   <div>
-    <div v-if="this.userInfo[0].ocupacao==='Gestor'">
+    <div v-if="this.userInfo.ocupacao==='Gestor'">
       <h1>Gestor</h1>
       <p>&nbsp;</p>
       <GestorComponent></GestorComponent>
     </div>
-    <div v-else-if="this.userInfo[0].ocupacao==='Policia'">
+    <div v-else-if="this.userInfo.ocupacao==='Policia'">
       <h1>Policia</h1>
       <p>&nbsp;</p>
       <PoliciaComponent></PoliciaComponent>
     </div>
-    <div v-else-if="this.userInfo[0].ocupacao==='Hospital'">
+    <div v-else-if="this.userInfo.ocupacao==='Hospital'">
       <h1>Hospital</h1>
       <p>&nbsp;</p>
       <HospitalComponent></HospitalComponent>
@@ -51,7 +51,7 @@ export default {
   methods: {},
   mounted() {
     var userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    this.userInfo = userInfo;
+    this.userInfo = userInfo[0];
     console.log(userInfo);
   }
 };

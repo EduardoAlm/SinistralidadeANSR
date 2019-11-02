@@ -57,6 +57,7 @@ export default {
   name: "CivilComponent",
   data() {
     return {
+      imageUrl: require("../../assets/img/favicon-16x16.png"),
       myInput: "Selecione o concelho"
     };
   },

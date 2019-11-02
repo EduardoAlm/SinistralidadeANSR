@@ -30,7 +30,8 @@
           <th>Via</th>
           <th>Km</th>
           <th>Natureza</th>
-          <th>Historico</th>
+          <th>Histórico</th>
+          <th></th>
         </tr>
         <tr
           v-for="ac in acidentes"
@@ -47,13 +48,20 @@
           <td>{{ ac.km }}</td>
           <td>{{ ac.natureza }}</td>
           <td>
-            <button class="w3-button w3-green w3-round" @click="modalHistorico()">Ver histórico</button>
+            <button class="w3-button w3-orange w3-round" @click="modalHistorico()">Ver histórico</button>
+          </td>
+          <td>
+            <button class="w3-button w3-blue w3-round" @click="modalUpdateAcidente()">Atualizar</button>
+          </td>
+          <td>
+            <button
+              class="w3-button w3-red w3-round w3-margin-left"
+              @click="selectAcidente(ac.id, ac.concelho, ac.ocupacao, ac.datahora, ac.mortos, ac.feridosg, ac.via,ac.km, ac.natureza);deleteAcidente()"
+            >Apagar</button>
           </td>
         </tr>
       </table>
       <p>&nbsp;</p>
-
-      <button class="w3-button w3-green w3-round" @click="modalUpdateAcidente();">Atualizar</button>
     </div>
     <modal name="historicoModal" height="auto" :scrollable="true">
       <div class="w3-container w3-row">
@@ -222,7 +230,7 @@ export default {
     historicobyid() {
       return this.$store.state.historicobyid;
     },
-    historicolastidf() {
+    historicolastid() {
       return this.$store.state.historicolastid;
     },
     historicof() {
@@ -317,9 +325,9 @@ export default {
       dict["feridosg"] = this.feridosg;
       var dict1 = {};
 
-      console.log(await this.$store.dispatch("update_acidentehospital", dict));
+      await this.$store.dispatch("update_acidentehospital", dict);
 
-      this.getHistoricoLastId();
+      await this.$store.dispatch("get_lastidhistorico");
       console.log(this.historicolastid);
       if (this.historicolastid.status == 404) {
         dict1["id"] = 1;
