@@ -53,12 +53,6 @@
           <td>
             <button class="w3-button w3-blue w3-round" @click="modalUpdateAcidente()">Atualizar</button>
           </td>
-          <td>
-            <button
-              class="w3-button w3-red w3-round w3-margin-left"
-              @click="selectAcidente(ac.id, ac.concelho, ac.ocupacao, ac.datahora, ac.mortos, ac.feridosg, ac.via,ac.km, ac.natureza);deleteAcidente()"
-            >Apagar</button>
-          </td>
         </tr>
       </table>
       <p>&nbsp;</p>

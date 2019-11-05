@@ -220,6 +220,7 @@ class AcidenteUpdateHospitalView (APIView):
         try:
             with transaction.atomic(using=None, savepoint=True):
                 obj = acidente.objects.select_for_update().filter(id=id)
+                # time.sleep(3)
                 lastID = historico.objects.latest('id')
                 obj.update(mortos=mortos, feridosg=feridosg)
         except DatabaseError:
