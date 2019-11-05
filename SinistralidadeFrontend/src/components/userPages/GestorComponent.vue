@@ -825,20 +825,16 @@ export default {
     updateAcidente: async function() {
       var dict = {};
       dict["id"] = this.id;
-      dict["concelho"] = this.concelho;
-      dict["datahora"] = this.datahora;
+      dict["cc"] = this.userCC;
       dict["mortos"] = this.mortos;
       dict["feridosg"] = this.feridosg;
-      dict["via"] = this.via;
-      dict["km"] = this.km;
-      dict["natureza"] = this.natureza;
       var dict1 = {};
 
-      console.log(await this.$store.dispatch("update_acidente", dict));
+      await this.$store.dispatch("update_acidentehospital", dict);
 
-      this.getHistoricoLastId();
-      console.log(this.historicolastid[0]);
-      if (this.historicolastid[0].status == 404) {
+      await this.$store.dispatch("get_lastidhistorico");
+      console.log(this.historicolastid);
+      if (this.historicolastid.status == 404) {
         dict1["id"] = 1;
         dict1["datahora"] = this.datahora;
         dict1["cc_user"] = this.userCC;
