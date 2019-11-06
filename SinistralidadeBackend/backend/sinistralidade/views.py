@@ -283,3 +283,16 @@ class HistoricoGetLastId (APIView):
         hist = historico.objects.filter(id=lastID.id)
         serializer = historicoSerializer(hist, many=True)
         return Response(serializer.data)
+
+
+class HistoricoDeleteView(APIView):
+    @transaction.atomic
+    def get(self, request, id, format=None):
+        try:
+            with transaction.atomic(using=None, savepoint=True):
+                hist = historico.objects.select_for_update().get(
+                    id=id)
+                hist.delete()
+        except DatabaseError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_200_OK)
