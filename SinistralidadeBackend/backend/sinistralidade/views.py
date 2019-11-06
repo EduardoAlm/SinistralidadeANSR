@@ -287,7 +287,7 @@ class HistoricoGetLastId (APIView):
 
 class HistoricoDeleteView(APIView):
     @transaction.atomic
-    def get(self, request, id, format=None):
+    def post(self, request, id, format=None):
         try:
             with transaction.atomic(using=None, savepoint=True):
                 hist = historico.objects.select_for_update().get(

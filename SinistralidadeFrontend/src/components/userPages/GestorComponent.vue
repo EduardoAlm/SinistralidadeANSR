@@ -862,6 +862,17 @@ export default {
     },
     deleteAcidente: async function() {
       console.log(this.id);
+      await this.$store.dispatch("get_historico", this.id);
+      if (this.historicobyid.length > 0) {
+        for (var i = 0; i < this.historicobyid.length; i++) {
+          console.log(
+            await this.$store.dispatch(
+              "del_historico",
+              this.historicobyid[i].id
+            )
+          );
+        }
+      }
       console.log(await this.$store.dispatch("del_acidente", this.id));
       this.myInput = this.concelho;
       this.getAc(this.concelho);

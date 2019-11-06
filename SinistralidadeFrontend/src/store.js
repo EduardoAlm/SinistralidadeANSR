@@ -58,6 +58,9 @@ const store = new Vuex.Store({
     DEL_ACIDENTE: function(state, response) {
       console.log(response.body);
     },
+    DEL_HISTORICO: function(state, response) {
+      console.log(response.body);
+    },
     GET_LASTIDACIDENTES: function(state, response) {
       state.lastAcID = response.body;
       console.log(state.lastAcID);
@@ -192,6 +195,12 @@ const store = new Vuex.Store({
       return await api
         .post(apiRoot + "/acidentedel/" + parseInt(id) + "/")
         .then(response => store.commit("DEL_ACIDENTE", response))
+        .catch(error => store.commit("API_FAIL", error));
+    },
+    async del_historico(store, id) {
+      return await api
+        .post(apiRoot + "/historicodel/" + parseInt(id) + "/")
+        .then(response => store.commit("DEL_HISTORICO", response))
         .catch(error => store.commit("API_FAIL", error));
     },
     async acidenteget_lastid(store) {
