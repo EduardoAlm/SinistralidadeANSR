@@ -30,6 +30,7 @@ from .views import (
     HistoricoPostView,
     HistoricoGetLastId,
     HistoricoGetView,
+    HistoricoDeleteView,
 )
 
 urlpatterns = [
@@ -74,6 +75,9 @@ urlpatterns = [
          name='get_lastidhistorico'),
 
     path('historicoget/<int:id_acidente>/',
-         HistoricoGetView.as_view(), name='get_historico')
+         HistoricoGetView.as_view(), name='get_historico'),
+
+    path('historicodel/<int:id>/',
+         HistoricoDeleteView.as_view(), name='del_historico')
 
 ]
